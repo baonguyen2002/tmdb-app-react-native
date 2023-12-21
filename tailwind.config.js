@@ -22,6 +22,9 @@ module.exports = {
     "./DiscoverResults.js",
     "./HorizontalFlatList.js",
     "./FavoriteRatingWatchList.js",
+    "./Setting.js",
+    "./ForYouMovie.js",
+    "./ForYouMovieSeeMore.js",
   ],
   theme: {
     extend: {},

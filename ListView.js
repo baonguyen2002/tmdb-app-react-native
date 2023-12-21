@@ -45,7 +45,13 @@ const ListView = ({ results, type, setPage, origin, isNewDataEmpty, role }) => {
         updateCellsBatchingPeriod={2000}
         onEndReached={setPage ? LoadMore : false}
         renderItem={renderItem}
-        ListFooterComponent={!isNewDataEmpty ? ListFooterComponent : null}
+        ListFooterComponent={
+          setPage === false
+            ? null
+            : !isNewDataEmpty
+            ? ListFooterComponent
+            : null
+        }
         keyExtractor={(item) => {
           if (role.includes("person")) {
             return item.credit_id.toString();
@@ -110,6 +116,9 @@ class Item extends PureComponent {
       case "tvdiscover":
         location = "DiscoverTv";
         break;
+      case "personsearch":
+        location = "SearchPersonDetails";
+        break;
     }
     //const destinationPage = setScreenName();
     const header = type === "movies" ? item.title : item.name;
@@ -119,6 +128,26 @@ class Item extends PureComponent {
         return str.slice(0, 40) + "...";
       }
       return str;
+    }
+    let date = null;
+    // type === "movies"
+    //   ? item.release_date
+    //     ? item.release_date
+    //     : type.includes("tv")
+    //     ? item.first_air_date
+    //       ? item.first_air_date
+    //       : null
+    //     : null
+    //   : null;
+    if (type.includes("movie")) {
+      if (item.release_date) {
+        date = item.release_date;
+      }
+    }
+    if (type.includes("tv")) {
+      if (item.first_air_date) {
+        date = item.first_air_date;
+      }
     }
     return (
       <TouchableOpacity
@@ -137,6 +166,7 @@ class Item extends PureComponent {
             series_id: item.id,
             header: header,
             origin: origin,
+            person_id: item.id,
           });
         }}
       >
@@ -165,11 +195,14 @@ class Item extends PureComponent {
 
           {type != "person" ? (
             <>
-              <Text className="font-light">
-                {type === "movies"
-                  ? "Release date: " + item.release_date
-                  : "First aired: " + item.first_air_date}
-              </Text>
+              {date ? (
+                <Text className="font-light">
+                  {type === "movies"
+                    ? "Release date: " + item.release_date
+                    : "First aired: " + item.first_air_date}
+                </Text>
+              ) : null}
+
               <View className="flex flex-row items-center">
                 <Text className="font-semibold">Rating: </Text>
                 <Badge

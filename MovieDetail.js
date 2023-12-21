@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-
+//import { insertFlaggedMovie, fetchFlaggedMovie } from "./Database";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 import PersonProfileStack from "./PersonProfile";
@@ -61,7 +61,8 @@ const MovieDetailInfo = ({ route }) => {
   const [sliderValue, setSliderValue] = useState(5);
   const navigation2 = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const { sessionId, accountDetail } = useContext(Context);
+  const { sessionId, accountDetail, flaggedMovieList, setFlaggedMovieList } =
+    useContext(Context);
   const { movie_id, origin } = route.params;
   const [movieDetail, setMovieDetail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -72,6 +73,7 @@ const MovieDetailInfo = ({ route }) => {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [language, setLanguage] = useState(false);
   const [localRatings, setLocalRatings] = useState(false);
+  //const [localFlaggedMovieList, setLocalFlaggedMovieList] = useState([]);
   const pushLocation =
     origin === "moviemain"
       ? "MainMovieDetail"
@@ -80,18 +82,16 @@ const MovieDetailInfo = ({ route }) => {
       : origin === "moviediscover"
       ? "DiscoverMovie"
       : "MyMovieDetails";
-  function truncateName(str) {
-    if (str.length > 22) {
-      return str.slice(0, 15) + "...";
-    }
-    return str;
-  }
-  function truncateRole(str) {
-    if (str.length > 40) {
-      return str.slice(0, 40) + "...";
-    }
-    return str;
-  }
+  // const fetchFlaggedFromDatabase = async () => {
+  //   try {
+  //     const flaggedMovieListFromDB = await fetchFlaggedMovie();
+  //     setFlaggedMovieList(flaggedMovieListFromDB);
+  //     setLocalFlaggedMovieList(flaggedMovieListFromDB);
+  //     console.log("fetched movie: ", flaggedMovieListFromDB);
+  //   } catch (error) {
+  //     console.log("Error fetching movie list:", error);
+  //   }
+  // };
   const GetMovieInfo = () => {
     axios
       .get(
@@ -154,8 +154,17 @@ const MovieDetailInfo = ({ route }) => {
   };
   useEffect(() => {
     //console.log("movie id:", id);
+    // fetchFlaggedFromDatabase();
     GetMovieInfo();
   }, []);
+  // const handleInsertMovie = async () => {
+  //   try {
+  //     await insertFlaggedMovie(movie_id);
+  //     fetchFlaggedFromDatabase(); // Fetch updated notes after deleting a note
+  //   } catch (error) {
+  //     console.error("Error inserting movie:", error);
+  //   }
+  // };
   const handleHeartPress = () => {
     //console.log("HeartPressed");
     const newState = !isFavorited;
@@ -174,6 +183,9 @@ const MovieDetailInfo = ({ route }) => {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        // handleInsertMovie(movie_id);
       });
   };
   const handleBookmarkPress = () => {
@@ -194,6 +206,9 @@ const MovieDetailInfo = ({ route }) => {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        //handleInsertMovie(movie_id);
       });
   };
   const handleStarPress = () => {
@@ -221,6 +236,7 @@ const MovieDetailInfo = ({ route }) => {
         setLocalRatings={setLocalRatings}
         season_number={false}
         episode_number={false}
+        //setList={setLocalFlaggedMovieList}
       />
       <ScrollView className="px-4 ">
         {movieDetail.poster_path ? (

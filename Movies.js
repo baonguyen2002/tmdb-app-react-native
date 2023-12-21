@@ -19,13 +19,23 @@ import { AntDesign } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import GridView from "./GridView";
-
+import ForyouMovieStack from "./ForYouMovie";
 const Stack = createStackNavigator();
 
 function MovieStack() {
   return (
     <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
-      <Stack.Screen name="Movies" component={Movies} />
+      <Stack.Screen
+        name="ForYouMovie"
+        component={ForyouMovieStack}
+        options={{ headerShown: false }}
+        initialParams={{ type: "movie" }}
+      />
+      <Stack.Screen
+        name="Movies"
+        component={Movies}
+        options={{ headerTitle: "Popular Movies" }}
+      />
       <Stack.Screen
         name="MainMovieDetail"
         component={MovieDetail}
@@ -163,7 +173,7 @@ const Movies = () => {
         navigationDestination={"MainMovieDetail"}
         origin={"moviemain"}
       />
-      <View className="flex flex-row items-center justify-between px-4 py-2">
+      {/* <View className="flex flex-row items-center justify-between px-4 py-2">
         {moviePage === 1 ? (
           <View></View>
         ) : (
@@ -206,6 +216,43 @@ const Movies = () => {
               <AntDesign name="forward" size={24} color="white" />
             </TouchableOpacity>
           </LinearGradient>
+        )}
+      </View> */}
+      <View className="flex flex-row items-center justify-between px-4 py-2">
+        {moviePage === 1 ? (
+          <View></View>
+        ) : (
+          <Button
+            onPress={() => GoBack()}
+            title="<<"
+            color="#841584"
+            accessibilityLabel="Go back previous page"
+          />
+        )}
+        <View className="flex flex-row items-center justify-between">
+          <Text>Page: </Text>
+          <TextInput
+            keyboardType="numeric"
+            onChangeText={setcurrentPage}
+            value={currentPage}
+            className="w-12 text-center"
+          />
+          <Button
+            onPress={() => GoToPage()}
+            title="Go"
+            color="#841584"
+            accessibilityLabel="Go to specified page"
+          />
+        </View>
+        {moviePage === maxPage ? (
+          <View></View>
+        ) : (
+          <Button
+            onPress={() => GoNext()}
+            title=">>"
+            color="#841584"
+            accessibilityLabel="Go to next page"
+          />
         )}
       </View>
     </>

@@ -1,11 +1,14 @@
 // App.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import axios from "axios";
 import PersonImageList from "./PersonImageList";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import OtherCreditsTabs from "./OtherCredits";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { insertActor, deleteActor, fetchActor } from "./Database";
+import { Context } from "./Context";
 const Stack = createStackNavigator();
 
 const PersonProfileStack = ({ route }) => {
@@ -39,23 +42,62 @@ const PersonProfileStack = ({ route }) => {
   );
 };
 const PersonProfile = ({ route }) => {
+  const { setFavActorList } = useContext(Context);
+  const [isFavorited, setIsFavorited] = useState(false);
   const [personDetail, setPersonDetail] = useState("");
   const { person_id, origin } = route.params;
   const [showFullText, setShowFullText] = useState(false);
+  const [localFavActorList, setLocalFavActorList] = useState([]);
   const toggleReadMore = () => {
     setShowFullText(!showFullText);
   };
   const navigation = useNavigation();
-
+  const fetchActorsFromDatabase = async () => {
+    try {
+      const actorsListFromDB = await fetchActor();
+      setFavActorList(actorsListFromDB);
+      setLocalFavActorList(actorsListFromDB);
+      setIsFavorited(
+        actorsListFromDB.some((item) => item.actorId === person_id)
+      );
+      console.log("fetched actor: ", actorsListFromDB);
+    } catch (error) {
+      console.log("Error fetching actors list:", error);
+    }
+  };
   const truncatedText = (text) => {
     return text.slice(0, 200);
   };
   const displayText = (text) => {
     return showFullText ? text : truncatedText(text);
   };
+  const handleHeartPress = () => {
+    if (localFavActorList.some((item) => item.actorId === person_id)) {
+      const handleDeleteActor = async () => {
+        try {
+          await deleteActor(person_id);
+          fetchActorsFromDatabase(); // Fetch updated notes after deleting a note
+        } catch (error) {
+          console.error("Error deleting actor genre", error);
+        }
+      };
+      handleDeleteActor();
+    } else {
+      const handleAddActor = async () => {
+        try {
+          await insertActor(person_id);
+          fetchActorsFromDatabase(); // Fetch updated notes after deleting a note
+        } catch (error) {
+          console.error("Error adding actor", error);
+        }
+      };
+      handleAddActor();
+    }
+  };
   useEffect(() => {
-    console.log(person_id, origin);
+    //console.log(person_id, origin);
     fetchPersonDetail();
+    fetchActorsFromDatabase();
   }, []);
   const fetchPersonDetail = () => {
     axios
@@ -89,6 +131,19 @@ const PersonProfile = ({ route }) => {
           {personDetail.name}
         </Text>
       ) : null}
+      <TouchableOpacity
+        className="items-center w-full text-center"
+        onPress={() => {
+          handleHeartPress();
+        }}
+      >
+        <AntDesign
+          name={isFavorited ? "heart" : "hearto"}
+          size={30}
+          color={isFavorited ? "fuchsia" : "black"}
+        />
+        {isFavorited ? <Text>Favorited</Text> : <Text>Add to Favorites</Text>}
+      </TouchableOpacity>
       {personDetail.birthday ? (
         <Text className="text-base italic text-sky-600">
           <Text className="text-lg font-semibold text-black">Born: </Text>

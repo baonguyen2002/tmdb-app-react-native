@@ -13,6 +13,7 @@ import { Context } from "./Context";
 import { useContext, useState, useEffect } from "react";
 import SplashScreen from "./SplashScreen";
 import DiscoverStack from "./Discover";
+import { setUpDatabase } from "./Database";
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -94,6 +95,7 @@ const RenderLogin = () => {
 };
 
 const App = () => {
+  setUpDatabase();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // Simulating the asynchronous process of checking session ID

@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import axios from "axios";
 import Slider from "@react-native-community/slider";
 import { Context } from "./Context";
+//import { insertFlaggedMovie, fetchFlaggedMovie } from "./Database";
 const RatingModal = ({
   modalVisible,
   setModalVisible,
@@ -15,8 +16,20 @@ const RatingModal = ({
   setLocalRatings,
   season_number,
   episode_number,
+  //setList,
 }) => {
-  const { sessionId } = useContext(Context);
+  const { sessionId, setFlaggedMovieList } = useContext(Context);
+  // const fetchFlaggedFromDatabase = async () => {
+  //   try {
+  //     const flaggedMovieListFromDB = await fetchFlaggedMovie();
+  //     setFlaggedMovieList(flaggedMovieListFromDB);
+  //     setList(flaggedMovieListFromDB);
+
+  //     console.log("fetched movie: ", flaggedMovieListFromDB);
+  //   } catch (error) {
+  //     console.log("Error fetching movie list:", error);
+  //   }
+  // };
   const handleDeletePress = () => {
     const setUrl = () => {
       if (typeof episode_number === "number") {
@@ -28,7 +41,7 @@ const RatingModal = ({
     axios
       .delete(setUrl())
       .then((res) => {
-        console.log("delete success: ", res.data);
+        // console.log("delete success: ", res.data);
       })
       .catch((err) => {
         console.error(err);
@@ -37,6 +50,17 @@ const RatingModal = ({
     setModalVisible(false);
     setLocalRatings(false);
   };
+  useEffect(() => {
+    fetchFlaggedFromDatabase();
+  }, []);
+  // const handleInsertMovie = async () => {
+  //   try {
+  //     await insertFlaggedMovie(id);
+  //     fetchFlaggedFromDatabase(); // Fetch updated notes after deleting a note
+  //   } catch (error) {
+  //     console.error("Error inserting movie:", error);
+  //   }
+  // };
   const handleOkPress = () => {
     const setUrl = () => {
       if (typeof episode_number === "number") {
@@ -50,10 +74,13 @@ const RatingModal = ({
         value: sliderValue,
       })
       .then((response) => {
-        console.log("update rating success: ", response.data);
+        //console.log("update rating success: ", response.data);
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        // handleInsertMovie();
       });
     setIsRated(true);
     setModalVisible(false);

@@ -178,7 +178,7 @@ const Shows = () => {
             accessibilityLabel="Go to specified page"
           />
         </View>
-        {showPage === 93 ? (
+        {showPage === maxPage ? (
           <View></View>
         ) : (
           <Button

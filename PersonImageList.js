@@ -5,12 +5,12 @@ import Loading from "./Loading";
 import axios from "axios";
 const PersonImageList = ({ route }) => {
   const [imageList, setImageList] = useState([]);
-  const { id } = route.params;
+  const { person_id } = route.params;
   const [isLoading, setIsLoading] = useState(true);
   const fetchImages = () => {
     axios
       .get(
-        `https://api.themoviedb.org/3/person/${id}/images?api_key=841da308423b4b64ea4d57d052583683`
+        `https://api.themoviedb.org/3/person/${person_id}/images?api_key=841da308423b4b64ea4d57d052583683`
       )
       .then((response) => {
         //console.log(response.data.profiles);

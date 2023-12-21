@@ -50,7 +50,7 @@ class Item extends PureComponent {
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log("series_id:", item.id, "movie_id:", item.id);
+          //console.log("series_id:", item.id, "movie_id:", item.id);
           navigation.navigate(navigationDestination, {
             series_id: item.id,
             movie_id: item.id,

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import axios from "axios";
 import { Context } from "./Context";
 import { useState } from "react";
@@ -7,6 +7,8 @@ import Loading from "./Loading";
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import FavoriteRatingWatchList from "./FavoriteRatingWatchList";
+import SettingsTabs from "./Setting";
+import FavActorList from "./FavActorList";
 const Stack = createStackNavigator();
 const Profile = () => {
   const navigation = useNavigation();
@@ -40,22 +42,24 @@ const Profile = () => {
     fetchAccountInfo();
   }, []);
   return accountDetail ? (
-    <View className="items-center">
+    <ScrollView>
       {avatarPath ? (
         <Image
-          className="w-40 h-40 rounded-full "
+          className="self-center w-40 h-40 rounded-full"
           source={{
             uri: `https://image.tmdb.org/t/p/w185${avatarPath}`,
           }}
         />
       ) : (
         <Image
-          className="w-40 h-40 rounded-full"
+          className="self-center w-40 h-40 rounded-full "
           source={require("./assets/blank_avatar.jpg")}
         />
       )}
       {accountDetail.name ? (
-        <Text className="text-3xl font-extrabold">{accountDetail.name}</Text>
+        <Text className="text-3xl font-extrabold text-center">
+          {accountDetail.name}
+        </Text>
       ) : (
         <Text className="text-3xl font-extrabold">
           {accountDetail.username}
@@ -81,7 +85,15 @@ const Profile = () => {
             });
           }}
         >
-          <Text>Favorites</Text>
+          <Text>Favorites Movies and Shows</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="items-center justify-center w-4/5 h-20 border-2"
+          onPress={() => {
+            navigation.navigate("FavActorList");
+          }}
+        >
+          <Text>Favorite Actors</Text>
         </TouchableOpacity>
         <TouchableOpacity
           className="items-center justify-center w-4/5 h-20 border-2"
@@ -113,9 +125,17 @@ const Profile = () => {
         <TouchableOpacity
           className="items-center justify-center w-4/5 h-20 border-2"
           onPress={() => {
+            navigation.navigate("Settings");
+          }}
+        >
+          <Text>Settings</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="items-center justify-center w-4/5 h-20 border-2"
+          onPress={() => {
             setSessionId(null);
             setApproved(false);
-            setRequestToken(null);
+            // setRequestToken(null);
             axios
               .delete(
                 `https://api.themoviedb.org/3/authentication/session?api_key=841da308423b4b64ea4d57d052583683&&session_id=${sessionId}`
@@ -134,7 +154,7 @@ const Profile = () => {
           <Text>Log Out</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   ) : (
     <Loading />
   );
@@ -152,6 +172,14 @@ const ProfileStack = () => {
         name="FavoriteRatingWatchList"
         component={FavoriteRatingWatchList}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsTabs}
+        options={{
+          headerTitleAlign: "center",
+          headerTitle: "Set your preferences",
+        }}
       />
     </Stack.Navigator>
   );
