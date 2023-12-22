@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
-import { View, Text, Image, Button } from "react-native";
+import { View, Text, Image, Button, Alert } from "react-native";
 import { Context } from "./Context";
 import axios from "axios";
 
@@ -14,6 +14,7 @@ const LoginScreen = () => {
   const [requestToken, setRequestToken] = useState("");
 
   const fetchRequestToken = () => {
+    setRequestToken("");
     axios
       .get(
         `https://api.themoviedb.org/3/authentication/token/new?api_key=841da308423b4b64ea4d57d052583683`
@@ -49,6 +50,9 @@ const LoginScreen = () => {
       })
       .catch((err) => {
         console.error(err);
+        Alert.alert("Error", "Log in failed, please try again");
+
+        fetchRequestToken();
       });
   };
 
