@@ -45,7 +45,7 @@ export const db = SQLite.openDatabase("preferences.db");
 export const setUpDatabase = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS actor (id INTEGER PRIMARY KEY AUTOINCREMENT, actorId INTEGER NOT NULL)",
+      "CREATE TABLE IF NOT EXISTS actor (id INTEGER PRIMARY KEY AUTOINCREMENT, actorId INTEGER NOT NULL, profileImageUrl TEXT, name TEXT NOT NULL)",
       [],
       () => console.log("actor table created successfully"),
       (_, error) => console.error("Error creating actors table", error)
@@ -107,12 +107,12 @@ export const deleteActor = (id) => {
   });
 };
 
-export const insertActor = (actorId) => {
+export const insertActor = (actorId, profileImageUrl, name) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "INSERT INTO actor (actorId) VALUES ( ?)",
-        [actorId],
+        "INSERT INTO actor (actorId, profileImageUrl, name) VALUES ( ?,?,?)",
+        [actorId, profileImageUrl, name],
         (_, result) => resolve(result.insertId),
         (_, error) => reject(error)
       );

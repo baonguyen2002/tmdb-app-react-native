@@ -71,11 +71,11 @@ const PersonProfile = ({ route }) => {
   const displayText = (text) => {
     return showFullText ? text : truncatedText(text);
   };
-  const handleHeartPress = () => {
-    if (localFavActorList.some((item) => item.actorId === person_id)) {
+  const handleHeartPress = (actorId, profile_path, actorName) => {
+    if (localFavActorList.some((item) => item.actorId === actorId)) {
       const handleDeleteActor = async () => {
         try {
-          await deleteActor(person_id);
+          await deleteActor(actorId);
           fetchActorsFromDatabase(); // Fetch updated notes after deleting a note
         } catch (error) {
           console.error("Error deleting actor genre", error);
@@ -85,7 +85,7 @@ const PersonProfile = ({ route }) => {
     } else {
       const handleAddActor = async () => {
         try {
-          await insertActor(person_id);
+          await insertActor(actorId, profile_path, actorName);
           fetchActorsFromDatabase(); // Fetch updated notes after deleting a note
         } catch (error) {
           console.error("Error adding actor", error);
@@ -134,7 +134,11 @@ const PersonProfile = ({ route }) => {
       <TouchableOpacity
         className="items-center w-full text-center"
         onPress={() => {
-          handleHeartPress();
+          handleHeartPress(
+            personDetail.id,
+            personDetail.profile_path ? personDetail.profile_path : null,
+            personDetail.name
+          );
         }}
       >
         <AntDesign

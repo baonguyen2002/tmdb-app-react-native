@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import axios from "axios";
-import ForYouMovieSeeMore from "./ForYouMovieSeeMore";
+import ForYouTvSeeMore from "./ForYouTvSeeMore";
 import {
   Text,
   View,
@@ -16,25 +16,28 @@ import {
   Image,
 } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { fetchFavMovieGenre, fetchFlaggedMovie, fetchActor } from "./Database";
+import { fetchFavTvGenre, fetchActor } from "./Database";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Badge } from "@rneui/themed";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
-const ForyouMovieStack = () => {
+const ForYouTvStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="ForYouMovieTab"
+        name="ForYouTvTab"
         component={ForYouTab}
         options={{ headerTitle: "For You", headerTitleAlign: "center" }}
       />
       <Stack.Screen
-        name="ForYouMovieSeeMore"
-        component={ForYouMovieSeeMore}
-        options={{ headerTitleAlign: "center", headerTitle: "See More Movies" }}
+        name="ForYouTvSeeMore"
+        component={ForYouTvSeeMore}
+        options={{
+          headerTitleAlign: "center",
+          headerTitle: "See More TV Shows",
+        }}
       />
     </Stack.Navigator>
   );
@@ -57,49 +60,39 @@ const ForYouTab = () => {
 };
 const ForYou = ({ route }) => {
   const { type } = route.params;
-  const [localFavMovieGenreList, setLocalFavMovieGenreList] = useState([]);
-  const [movieListBasedOnFavMovieGenre, setMovieListBasedOnFavMovieGenre] =
-    useState([]);
+  const [localFavTvGenreList, setLocalFavTvGenreList] = useState([]);
+  const [tvListBasedOnFavTvGenre, setTvListBasedOnFavTvGenre] = useState([]);
   const navigation = useNavigation();
   const [localFavActorList, setLocalFavActorList] = useState([]);
-  const [movieListBasedOnFavActor, setMovieListBasedOnFavActor] = useState([]);
-
+  const [tvListBasedOnFavActor, setTvListBasedOnFavActor] = useState([]);
+  const [realLocalFavActorList, setRealLocalFavActorList] = useState([]);
   const [orJoinType, setOrJoinType] = useState(true);
   const [isVietnamese, setIsVietnamese] = useState(false);
-  const [localFlaggedMovie, setLocalFlaggedMovie] = useState([]);
-  const fetchFavMovieGenreFromDatabase = async () => {
+
+  const fetchFavTvGenreFromDatabase = async () => {
     try {
-      const movieGenreListFromDB = await fetchFavMovieGenre();
-      if (movieGenreListFromDB.length > 0) {
-        const favMovieGenreIds = movieGenreListFromDB.map(
-          (item) => item.favMovieGenreId
+      const tvGenreListFromDB = await fetchFavTvGenre();
+      if (tvGenreListFromDB.length > 0) {
+        const favTvGenreIds = tvGenreListFromDB.map(
+          (item) => item.favTvGenreId
         );
 
-        setLocalFavMovieGenreList(favMovieGenreIds);
-        console.log("fetched favMovieGenre: ", favMovieGenreIds);
+        setLocalFavTvGenreList(favTvGenreIds);
+        console.log("fetched favTvGenre: ", favTvGenreIds);
       } else {
-        setLocalFavMovieGenreList(movieGenreListFromDB);
-        console.log("fetched favMovieGenre: ", movieGenreListFromDB);
+        setLocalFavTvGenreList(tvGenreListFromDB);
+        console.log("fetched favTvGenre: ", tvGenreListFromDB);
       }
     } catch (error) {
-      console.log("Error fetching favMovieGenre list:", error);
+      console.log("Error fetching favTvGenre list:", error);
     }
   };
-
-  // const fetchFlaggedMovieFromDatabase = async () => {
-  //   try {
-  //     const flaggedMovieListFromDB = await fetchFlaggedMovie();
-
-  //     setLocalFlaggedMovie(flaggedMovieListFromDB);
-  //     console.log("fetched flaggedMovie: ", flaggedMovieListFromDB);
-  //   } catch (error) {
-  //     console.log("Error fetching actors list:", error);
-  //   }
-  // };
 
   const fetchActorsFromDatabase = async () => {
     try {
       const actorsListFromDB = await fetchActor();
+      setRealLocalFavActorList(actorsListFromDB);
+      console.log("real list: ", actorsListFromDB);
       if (actorsListFromDB.length > 0) {
         const favActorIds = actorsListFromDB.map((item) => item.actorId);
 
@@ -110,26 +103,24 @@ const ForYou = ({ route }) => {
         console.log("fetched favActor: ", actorsListFromDB);
       }
     } catch (error) {
-      console.log("Error fetching favMovieGenre list:", error);
+      console.log("Error fetching favTvGenre list:", error);
     }
   };
-  // useEffect(() => {
-  //   fetchFavMovieGenreFromDatabase();
-  // }, []);
+
   const fetchFavGenreResult = () => {
     const joinText = orJoinType
-      ? localFavMovieGenreList.join("|")
-      : localFavMovieGenreList.join(",");
+      ? localFavTvGenreList.join("|")
+      : localFavTvGenreList.join(",");
     const language = isVietnamese ? "vi" : "en";
     axios
       .get(
-        `https://api.themoviedb.org/3/discover/movie?api_key=841da308423b4b64ea4d57d052583683&include_adult=false&include_video=false&with_genres=${joinText}&with_original_language=${language}`
+        `https://api.themoviedb.org/3/discover/tv?api_key=841da308423b4b64ea4d57d052583683&include_adult=false&include_video=false&with_genres=${joinText}&with_original_language=${language}`
 
         //&language=en-US
       )
       .then((res) => {
         //console.log(res.data.results);
-        setMovieListBasedOnFavMovieGenre(res.data.results);
+        setTvListBasedOnFavTvGenre(res.data.results);
         // if (res.data.total_pages > 500) {
         //   setMaxFavGenrePage(500);
         // } else {
@@ -140,56 +131,56 @@ const ForYou = ({ route }) => {
         console.error(err);
       });
   };
-  const fetchFavActorMovie = () => {
-    const joinText = orJoinType
-      ? localFavActorList.join("|")
-      : localFavActorList.join(",");
-    console.log(joinText);
-    axios
-      .get(
-        `https://api.themoviedb.org/3/discover/movie?api_key=841da308423b4b64ea4d57d052583683&include_adult=false&include_video=false&with_cast=${joinText}`
+  //   const fetchFavActorTv = () => {
+  //     const joinText = orJoinType
+  //       ? localFavActorList.join("|")
+  //       : localFavActorList.join(",");
+  //     console.log(joinText);
+  //     axios
+  //       .get(
+  //         `https://api.themoviedb.org/3/discover/tv?api_key=841da308423b4b64ea4d57d052583683&include_adult=false&include_video=false&with_cast=${joinText}`
 
-        //&language=en-US
-      )
-      .then((res) => {
-        //console.log(res.data.results);
-        setMovieListBasedOnFavActor(res.data.results);
-        // if (res.data.total_pages > 500) {
-        //   setMaxFavActorPage(500);
-        // } else {
-        //   setMaxFavActorPage(res.data.total_pages);
-        // }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+  //         //&language=en-US
+  //       )
+  //       .then((res) => {
+  //         //console.log(res.data.results);
+  //         setTvListBasedOnFavActor(res.data.results);
+  //         // if (res.data.total_pages > 500) {
+  //         //   setMaxFavActorPage(500);
+  //         // } else {
+  //         //   setMaxFavActorPage(res.data.total_pages);
+  //         // }
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //       });
+  //   };
   useFocusEffect(
     useCallback(() => {
-      fetchFavMovieGenreFromDatabase();
+      fetchFavTvGenreFromDatabase();
       // fetchFlaggedMovieFromDatabase();
       fetchActorsFromDatabase();
     }, [])
   );
   useEffect(() => {
-    if (localFavMovieGenreList.length > 0) {
+    if (localFavTvGenreList.length > 0) {
       fetchFavGenreResult();
     }
-  }, [localFavMovieGenreList, orJoinType, isVietnamese]);
-  useEffect(() => {
-    if (localFavActorList.length > 0) {
-      fetchFavActorMovie();
-    }
-  }, [orJoinType, localFavActorList]);
+  }, [localFavTvGenreList, orJoinType, isVietnamese]);
+  //   useEffect(() => {
+  //     if (localFavActorList.length > 0) {
+  //       fetchFavActorTv();
+  //     }
+  //   }, [orJoinType, localFavActorList]);
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
         onPress={() => {
-          navigation.navigate("MainMovieDetail", {
-            movie_id: item.id,
-            header: isVietnamese ? item.original_title : item.title,
-            origin: "moviemain",
+          navigation.navigate("MainShowDetail", {
+            series_id: item.id,
+            header: isVietnamese ? item.original_name : item.name,
+            origin: "tvmain",
             orJoinType: orJoinType,
           });
         }}
@@ -211,10 +202,10 @@ const ForYou = ({ route }) => {
         </View>
         <View className="flex items-start justify-center w-[71%]  ">
           <Text className="text-lg font-bold">
-            {isVietnamese ? item.original_title : item.title}
+            {isVietnamese ? item.original_name : item.name}
           </Text>
           <Text className="font-light">
-            {"Release date: " + item.release_date}
+            {"First aired date: " + item.first_air_date}
           </Text>
           <View className="flex flex-row items-center">
             <Text className="font-semibold">Rating: </Text>
@@ -237,7 +228,7 @@ const ForYou = ({ route }) => {
   };
   return type === "genre" ? (
     <>
-      {localFavMovieGenreList && localFavMovieGenreList.length > 0 ? (
+      {localFavTvGenreList && localFavTvGenreList.length > 0 ? (
         <>
           <Button
             title={orJoinType ? "Search Type: Or" : "Search Type: And"}
@@ -256,25 +247,25 @@ const ForYou = ({ route }) => {
             }}
           />
 
-          {movieListBasedOnFavMovieGenre &&
-          movieListBasedOnFavMovieGenre.length > 0 ? (
+          {tvListBasedOnFavTvGenre && tvListBasedOnFavTvGenre.length > 0 ? (
             <>
               <FlatList
-                data={movieListBasedOnFavMovieGenre.slice(0, 5)}
+                data={tvListBasedOnFavTvGenre.slice(0, 5)}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 ListFooterComponent={() => {
                   return (
                     <View className="flex flex-row items-center justify-evenly">
-                      {movieListBasedOnFavMovieGenre.length <= 5 ? null : (
+                      {tvListBasedOnFavTvGenre.length <= 5 ? null : (
                         <TouchableOpacity
                           className="w-[48%] bg-lime-300 flex-row items-center h-12 self-center justify-center border-2 border-fuchsia-400 rounded-lg"
                           onPress={() => {
-                            navigation.navigate("ForYouMovieSeeMore", {
-                              list: localFavMovieGenreList,
+                            navigation.navigate("ForYouTvSeeMore", {
+                              list: localFavTvGenreList,
                               isVietnamese: isVietnamese,
                               type: "genre",
                               orJoinType: orJoinType,
+                              isActor: false,
                             });
                           }}
                         >
@@ -286,11 +277,11 @@ const ForYou = ({ route }) => {
                       <TouchableOpacity
                         className="w-[48%] bg-lime-300 flex-row items-center h-12 self-center justify-center border-2 border-fuchsia-400 rounded-lg"
                         onPress={() => {
-                          navigation.navigate("Movies");
+                          navigation.navigate("Shows");
                         }}
                       >
                         <Text className="text-lg font-semibold text-center">
-                          To Popular Movies
+                          To Popular Shows
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -301,20 +292,20 @@ const ForYou = ({ route }) => {
           ) : (
             <View className="flex items-center justify-center w-full h-full">
               <Text className="text-2xl font-bold text-center">
-                Looks like no movies match your criteria.
+                Looks like no shows match your criteria.
               </Text>
               <View>
                 <Text className="text-2xl font-bold text-center">
-                  Or you can visit Popular Movies for some suggestions!
+                  Or you can visit Popular TV Shows for some suggestions!
                 </Text>
                 <TouchableOpacity
                   className="flex-row items-center  h-12 bg-green-600 border-2 rounded-md w-[65%] self-center"
                   onPress={() => {
-                    navigation.navigate("Movies");
+                    navigation.navigate("Shows");
                   }}
                 >
                   <Text className="text-base font-medium text-center text-white">
-                    To Popular Movies
+                    To Popular TV Shows
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -330,16 +321,16 @@ const ForYou = ({ route }) => {
           </Text>
           <View>
             <Text className="text-2xl font-bold text-center">
-              Or you can visit Popular Movies for some suggestions!
+              Or you can visit Popular TV Shows for some suggestions!
             </Text>
             <TouchableOpacity
               className="flex-row items-center  h-12 bg-green-600 border-2 rounded-md w-[65%] self-center"
               onPress={() => {
-                navigation.navigate("Movies");
+                navigation.navigate("Shows");
               }}
             >
               <Text className="text-base font-medium text-center text-white">
-                To Popular Movies
+                To Popular TV Shows
               </Text>
             </TouchableOpacity>
           </View>
@@ -350,73 +341,92 @@ const ForYou = ({ route }) => {
     <>
       {localFavActorList && localFavActorList.length > 0 ? (
         <>
-          <Button
+          {/* <Button
             title={orJoinType ? "Search Type: Or" : "Search Type: And"}
             onPress={() => {
               setOrJoinType((prev) => !prev);
             }}
-          />
-          {movieListBasedOnFavActor && movieListBasedOnFavActor.length > 0 ? (
-            <FlatList
-              data={movieListBasedOnFavActor.slice(0, 5)}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              ListFooterComponent={() => {
-                return (
-                  <View className="flex flex-row items-center justify-evenly">
-                    {movieListBasedOnFavActor.length <= 5 ? null : (
-                      <TouchableOpacity
-                        className="w-[48%] bg-lime-300 flex-row items-center h-12 self-center justify-center border-2 border-fuchsia-400 rounded-lg"
-                        onPress={() => {
-                          navigation.navigate("ForYouMovieSeeMore", {
-                            list: localFavActorList,
-                            isVietnamese: isVietnamese,
-                            type: "actor",
-                            orJoinType: orJoinType,
-                          });
+          /> */}
+          {/* {realLocalFavActorList && realLocalFavActorList.length > 0 ? ( */}
+          <FlatList
+            ListHeaderComponent={
+              <Text className="text-xl font-bold text-center">
+                Tap on any person to see the shows they starred in!
+              </Text>
+            }
+            data={realLocalFavActorList}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+                  onPress={() => {
+                    navigation.navigate("ForYouTvSeeMore", {
+                      actorId: item.actorId,
+                      isActor: true,
+                      list: localFavTvGenreList,
+                      isVietnamese: isVietnamese,
+                      type: "actor",
+                      orJoinType: orJoinType,
+                    });
+                  }}
+                >
+                  <View className="w-fit">
+                    {item.profileImageUrl && item.profileImageUrl.length > 0 ? (
+                      <Image
+                        source={{
+                          uri: `https://image.tmdb.org/t/p/w185/${item.profileImageUrl}`,
                         }}
-                      >
-                        <Text className="text-lg font-semibold text-center">
-                          See more results
-                        </Text>
-                      </TouchableOpacity>
+                        className="w-24 h-full mr-1 rounded-lg"
+                      />
+                    ) : (
+                      <Image
+                        source={require("./assets/blank.png")}
+                        className="w-24 h-full mr-1 rounded-lg"
+                      />
                     )}
-                    <TouchableOpacity
-                      className="w-[48%] bg-lime-300 flex-row items-center h-12 self-center justify-center border-2 border-fuchsia-400 rounded-lg"
-                      onPress={() => {
-                        navigation.navigate("Movies");
-                      }}
-                    >
-                      <Text className="text-lg font-semibold text-center">
-                        To Popular Movies
-                      </Text>
-                    </TouchableOpacity>
                   </View>
-                );
-              }}
-            />
-          ) : (
+                  <View className="flex items-start justify-center w-[71%]  ">
+                    <Text className="text-lg font-bold">{item.name}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            }}
+            keyExtractor={(item) => item.actorId}
+            ListFooterComponent={() => {
+              <TouchableOpacity
+                className="w-[70%] bg-lime-300 flex-row items-center h-12 self-center justify-center border-2 border-fuchsia-400 rounded-lg"
+                onPress={() => {
+                  navigation.navigate("Shows");
+                }}
+              >
+                <Text className="text-lg font-semibold text-center">
+                  To Popular Shows
+                </Text>
+              </TouchableOpacity>;
+            }}
+          />
+          {/* ) : (
             <View className="flex items-center justify-center w-full h-full">
               <Text className="text-2xl font-bold text-center">
-                Looks like no movies match your criteria.
+                Looks like no shows match your criteria.
               </Text>
               <View>
                 <Text className="text-2xl font-bold text-center">
-                  Or you can visit Popular Movies for some suggestions!
+                  Or you can visit Popular TV Shows for some suggestions!
                 </Text>
                 <TouchableOpacity
                   className="flex-row items-center  h-12 bg-green-600 border-2 rounded-md w-[65%] self-center"
                   onPress={() => {
-                    navigation.navigate("Movies");
+                    navigation.navigate("Shows");
                   }}
                 >
                   <Text className="text-base font-medium text-center text-white">
-                    To Popular Movies
+                    To Popular TV Shows
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
-          )}
+          )} */}
         </>
       ) : (
         <View className="flex items-center justify-center w-full h-full">
@@ -426,16 +436,16 @@ const ForYou = ({ route }) => {
           </Text>
           <View>
             <Text className="text-2xl font-bold text-center">
-              Or you can visit Popular Movies for some suggestions!
+              Or you can visit Popular TV Shows for some suggestions!
             </Text>
             <TouchableOpacity
               className="flex-row items-center  h-12 bg-green-600 border-2 rounded-md w-[65%] self-center"
               onPress={() => {
-                navigation.navigate("Movies");
+                navigation.navigate("Shows");
               }}
             >
               <Text className="text-base font-medium text-center text-white">
-                To Popular Movies
+                To Popular TV Shows
               </Text>
             </TouchableOpacity>
           </View>
@@ -445,4 +455,4 @@ const ForYou = ({ route }) => {
   );
 };
 
-export default ForyouMovieStack;
+export default ForYouTvStack;

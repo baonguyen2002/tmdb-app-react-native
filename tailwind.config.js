@@ -25,6 +25,9 @@ module.exports = {
     "./Setting.js",
     "./ForYouMovie.js",
     "./ForYouMovieSeeMore.js",
+    "./FavActorList.js",
+    "./ForYouTv.js",
+    "./ForYouTvSeeMore.js",
   ],
   theme: {
     extend: {},

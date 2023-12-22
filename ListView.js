@@ -153,14 +153,14 @@ class Item extends PureComponent {
       <TouchableOpacity
         className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
         onPress={() => {
-          console.log(
-            "header:",
-            header,
-            "series_id: ",
-            item.id,
-            "origin: ",
-            origin
-          );
+          // console.log(
+          //   "header:",
+          //   header,
+          //   "series_id: ",
+          //   item.id,
+          //   "origin: ",
+          //   origin
+          // );
           navigation.push(location, {
             movie_id: item.id,
             series_id: item.id,

@@ -50,9 +50,9 @@ const RatingModal = ({
     setModalVisible(false);
     setLocalRatings(false);
   };
-  useEffect(() => {
-    fetchFlaggedFromDatabase();
-  }, []);
+  // useEffect(() => {
+  //   fetchFlaggedFromDatabase();
+  // }, []);
   // const handleInsertMovie = async () => {
   //   try {
   //     await insertFlaggedMovie(id);

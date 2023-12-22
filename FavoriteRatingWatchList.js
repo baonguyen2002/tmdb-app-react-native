@@ -5,8 +5,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import Loading from "./Loading";
 import { createStackNavigator } from "@react-navigation/stack";
 import ListView from "./ListView";
-import ShowDetails from "./ShowDetails";
-import MovieDetail from "./MovieDetail";
+
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 const FavoriteRatingWatchList = ({ route }) => {
@@ -35,16 +34,6 @@ const FavoriteRatingWatchList = ({ route }) => {
           //   : "My Watchlist",
           headerTitleAlign: "center",
         }}
-      />
-      <Stack.Screen
-        name="MyMovieDetails"
-        component={MovieDetail}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="MyTvDetails"
-        component={ShowDetails}
-        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

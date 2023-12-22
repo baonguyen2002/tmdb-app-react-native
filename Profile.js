@@ -8,7 +8,10 @@ import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import FavoriteRatingWatchList from "./FavoriteRatingWatchList";
 import SettingsTabs from "./Setting";
-import FavActorList from "./FavActorList";
+import FavActorStack from "./FavActorList";
+import PersonProfileStack from "./PersonProfile";
+import ShowDetails from "./ShowDetails";
+import MovieDetail from "./MovieDetail";
 const Stack = createStackNavigator();
 const Profile = () => {
   const navigation = useNavigation();
@@ -169,8 +172,28 @@ const ProfileStack = () => {
         options={{ headerTitleAlign: "center" }}
       />
       <Stack.Screen
+        name="FavActorList"
+        component={FavActorStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="FavActorProfile"
+        component={PersonProfileStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="FavoriteRatingWatchList"
         component={FavoriteRatingWatchList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MyMovieDetails"
+        component={MovieDetail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MyTvDetails"
+        component={ShowDetails}
         options={{ headerShown: false }}
       />
       <Stack.Screen

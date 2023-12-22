@@ -101,7 +101,7 @@ const SearchResults = ({ route }) => {
   https://api.themoviedb.org/3/search/movie?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${movieSearchPage}`
         : type === "tvshow"
         ? `https://api.themoviedb.org/3/search/tv?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${TVShowSearchPage}`
-        : `https://api.themoviedb.org/3/search/person?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${personSearchPage}`;
+        : `https://api.themoviedb.org/3/search/person?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${personSearchPage}&include_adult=false&language=en-US`;
     if (!keyword) {
       Alert.alert("Invalid", "Please enter a keyword");
       return;

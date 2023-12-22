@@ -5,7 +5,7 @@ import GridView from "./GridView";
 import ShowDetails from "./ShowDetails";
 import Loading from "./Loading";
 import axios from "axios";
-
+import ForYouTvStack from "./ForYouTv";
 const Stack = createStackNavigator();
 
 function ShowsStack() {
@@ -15,7 +15,17 @@ function ShowsStack() {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Shows" component={Shows} />
+      <Stack.Screen
+        name="ForYouMovie"
+        component={ForYouTvStack}
+        options={{ headerShown: false }}
+        initialParams={{ type: "tv" }}
+      />
+      <Stack.Screen
+        name="Shows"
+        component={Shows}
+        options={{ headerTitle: "Popular Shows" }}
+      />
       <Stack.Screen
         name="MainShowDetail"
         component={ShowDetails}
