@@ -16,6 +16,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import HorizontalFlatList from "./HorizontalFlatList";
 import axios from "axios";
 import { FontAwesome } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -167,7 +168,7 @@ const EpisodeDetails = ({ route }) => {
         {details.name}
       </Text>
       <View className="flex flex-row w-full justify-evenly">
-        <TouchableOpacity
+        {/* <TouchableOpacity
           className="items-center w-1/3 text-center"
           onPress={() => {
             handleStarPress();
@@ -183,7 +184,7 @@ const EpisodeDetails = ({ route }) => {
           ) : (
             <Text>Add your rating</Text>
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {isRated.value ? (
         <Text className="text-base italic text-sky-600">
@@ -238,7 +239,7 @@ const EpisodeDetails = ({ route }) => {
       {crew && crew.length > 0 ? (
         <>
           <Text className="text-2xl font-extrabold">Crew:</Text>
-          <FlatList
+          {/* <FlatList
             className="mb-4"
             data={crew}
             initialNumToRender={5}
@@ -251,7 +252,7 @@ const EpisodeDetails = ({ route }) => {
               <TouchableOpacity
                 onPress={() => {
                   navigation.push("ShowPersonProfile", {
-                    id: item.id,
+                    person_id: item.id,
                     origin: origin,
                     header: item.name,
                   });
@@ -280,13 +281,25 @@ const EpisodeDetails = ({ route }) => {
                 </Text>
               </TouchableOpacity>
             )}
+          /> */}
+          <HorizontalFlatList
+            data={crew}
+            level2Text={true}
+            level3Text={false}
+            level4Text={false}
+            navigationDestination={"ShowPersonProfile"}
+            origin={origin}
+            dataType={"personcrew"}
+            series_id={null}
+            movie_id={null}
+            season_number={null}
           />
         </>
       ) : null}
       {guest && guest.length > 0 ? (
         <>
           <Text className="text-2xl font-extrabold">Guest stars:</Text>
-          <FlatList
+          {/* <FlatList
             className="mb-4"
             data={guest}
             initialNumToRender={5}
@@ -299,7 +312,7 @@ const EpisodeDetails = ({ route }) => {
               <TouchableOpacity
                 onPress={() => {
                   navigation.push("ShowPersonProfile", {
-                    id: item.id,
+                    person_id: item.id,
                     origin: origin,
                     header: item.name,
                   });
@@ -328,6 +341,18 @@ const EpisodeDetails = ({ route }) => {
                 </Text>
               </TouchableOpacity>
             )}
+          /> */}
+          <HorizontalFlatList
+            data={guest}
+            level2Text={true}
+            level3Text={false}
+            level4Text={false}
+            navigationDestination={"ShowPersonProfile"}
+            origin={origin}
+            dataType={"personcast"}
+            series_id={null}
+            movie_id={null}
+            season_number={null}
           />
         </>
       ) : null}
@@ -341,9 +366,9 @@ const EpisodeDetails = ({ route }) => {
               episode_number: episode_number,
             });
           }}
-          className="h-24 border-4 border-black w-[45%]"
+          className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
         >
-          <Text>More Images</Text>
+          <Text className="text-lg font-bold text-white">More Images</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -354,9 +379,9 @@ const EpisodeDetails = ({ route }) => {
               episode_number: episode_number,
             });
           }}
-          className="h-24 border-4 w-[45%] border-black"
+          className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
         >
-          <Text>Related Videos</Text>
+          <Text className="text-lg font-bold text-white">Related Videos</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

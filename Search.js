@@ -104,6 +104,7 @@ const SearchResults = ({ route }) => {
         : `https://api.themoviedb.org/3/search/person?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${personSearchPage}&include_adult=false&language=en-US`;
     if (!keyword) {
       Alert.alert("Invalid", "Please enter a keyword");
+      setLoading(false);
       return;
     } else {
       setEditable(false);
@@ -147,16 +148,17 @@ const SearchResults = ({ route }) => {
 
   return (
     <>
-      <View className="flex flex-row justify-evenly">
-        <TextInput
-          editable={editable}
-          onChangeText={setKeyword}
-          value={keyword}
-          className="w-4/6 border-4 border-indigo-500/75"
-        />
+      <View className="flex flex-row items-center mt-3 justify-evenly">
+        <View className="w-4/6 p-2 border-2 border-indigo-500/75">
+          <TextInput
+            editable={editable}
+            onChangeText={setKeyword}
+            value={keyword}
+          />
+        </View>
         {keyword ? (
           <TouchableOpacity onPress={clearText}>
-            <Ionicons name="close-circle-outline" size={20} color="gray" />
+            <Ionicons name="close-circle-outline" size={30} color="red" />
           </TouchableOpacity>
         ) : null}
 

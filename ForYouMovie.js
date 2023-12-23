@@ -167,7 +167,7 @@ const ForYou = ({ route }) => {
   useFocusEffect(
     useCallback(() => {
       fetchFavMovieGenreFromDatabase();
-      // fetchFlaggedMovieFromDatabase();
+
       fetchActorsFromDatabase();
     }, [])
   );
@@ -239,22 +239,36 @@ const ForYou = ({ route }) => {
     <>
       {localFavMovieGenreList && localFavMovieGenreList.length > 0 ? (
         <>
-          <Button
-            title={orJoinType ? "Search Type: Or" : "Search Type: And"}
-            onPress={() => {
-              setOrJoinType((prev) => !prev);
-            }}
-          />
-          <Button
-            title={
-              isVietnamese
-                ? "Current language: Vietnamese"
-                : "Current language: English"
-            }
-            onPress={() => {
-              setIsVietnamese((prev) => !prev);
-            }}
-          />
+          <View className="flex flex-row items-center justify-evenly">
+            <View className="w-1/2">
+              <Text className="text-base font-bold">
+                Tap to change filter type:
+              </Text>
+            </View>
+            <View className="w-2/5">
+              <Button
+                title={orJoinType ? "Or" : "And"}
+                onPress={() => {
+                  setOrJoinType((prev) => !prev);
+                }}
+              />
+            </View>
+          </View>
+          <View className="flex flex-row items-center justify-evenly">
+            <View className="w-1/2">
+              <Text className="text-base font-bold">
+                Tap to change filter language:
+              </Text>
+            </View>
+            <View className="w-2/5">
+              <Button
+                title={isVietnamese ? "Vietnamese" : "English"}
+                onPress={() => {
+                  setIsVietnamese((prev) => !prev);
+                }}
+              />
+            </View>
+          </View>
 
           {movieListBasedOnFavMovieGenre &&
           movieListBasedOnFavMovieGenre.length > 0 ? (
@@ -350,12 +364,21 @@ const ForYou = ({ route }) => {
     <>
       {localFavActorList && localFavActorList.length > 0 ? (
         <>
-          <Button
-            title={orJoinType ? "Search Type: Or" : "Search Type: And"}
-            onPress={() => {
-              setOrJoinType((prev) => !prev);
-            }}
-          />
+          <View className="flex flex-row items-center justify-evenly">
+            <View className="w-1/2">
+              <Text className="text-base font-bold">
+                Tap to change filter type:
+              </Text>
+            </View>
+            <View className="w-2/5">
+              <Button
+                title={orJoinType ? "Or" : "And"}
+                onPress={() => {
+                  setOrJoinType((prev) => !prev);
+                }}
+              />
+            </View>
+          </View>
           {movieListBasedOnFavActor && movieListBasedOnFavActor.length > 0 ? (
             <FlatList
               data={movieListBasedOnFavActor.slice(0, 5)}

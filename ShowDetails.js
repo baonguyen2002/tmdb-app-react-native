@@ -1,4 +1,10 @@
-import React, { useEffect, useLayoutEffect, useState, useContext } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import {
   View,
   Text,
@@ -7,15 +13,22 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import {
+  insertFavTv,
+  insertWatchlistTv,
+  deleteFavTv,
+  deleteWatchlistTv,
+} from "./Database";
 import axios from "axios";
 import Loading from "./Loading";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import VideoList from "./VideoList";
 import { createStackNavigator } from "@react-navigation/stack";
 import VideoWebView from "./VideoWebView";
 import RatingModal from "./RatingModal";
 import { Context } from "./Context";
+import Review from "./Review";
 import PersonProfileStack from "./PersonProfile";
 import SeasonDetailsStack from "./SeasonDetails";
 import HorizontalFlatList from "./HorizontalFlatList";
@@ -30,6 +43,12 @@ function ShowDetails({ route }) {
         name="ShowDetailInfo"
         component={ShowDetailInfo}
         initialParams={{ series_id: series_id, origin: origin, header: header }}
+      />
+      <Stack.Screen
+        name="ShowReview"
+        component={Review}
+        initialParams={{ id: series_id, type: "tv" }}
+        options={{ headerTitle: `Reviews for: ${header}` }}
       />
       <Stack.Screen
         name="ShowSeasonInfo"
@@ -91,6 +110,41 @@ const ShowDetailInfo = ({ route }) => {
       : origin === "tvdiscover"
       ? "DiscoverTv"
       : "MyTvDetails";
+
+  const handleInsertFavTv = async (tvId, posterImageUrl, name, date) => {
+    try {
+      await insertFavTv(tvId, posterImageUrl, name, date);
+      //fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error inserting fav tv", error);
+    }
+  };
+  const handleDeleteFavTv = async (tvId) => {
+    try {
+      await deleteFavTv(tvId);
+      //fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error inserting fav tv", error);
+    }
+  };
+
+  const handleInsertWatchilistTv = async (tvId, posterImageUrl, name, date) => {
+    try {
+      await insertWatchlistTv(tvId, posterImageUrl, name, date);
+      //fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error inserting fav tv", error);
+    }
+  };
+  const handleDeleteWatchlistTv = async (tvId) => {
+    try {
+      await deleteWatchlistTv(tvId);
+      //fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error inserting fav tv", error);
+    }
+  };
+
   const GetShowInfo = () => {
     axios
       .get(
@@ -150,11 +204,18 @@ const ShowDetailInfo = ({ route }) => {
         setIsLoading(false);
       });
   };
-  useEffect(() => {
-    GetShowInfo();
-    //console.log(id, origin);
-  }, []);
-  const handleHeartPress = () => {
+  // useEffect(() => {
+  //   GetShowInfo();
+  //   //console.log(id, origin);
+  // }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      GetShowInfo();
+    }, [])
+  );
+
+  const handleHeartPress = (id, posterUrl, name, date) => {
     //console.log("HeartPressed");
     const newState = !isFavorited;
     setIsFavorited(newState);
@@ -168,13 +229,20 @@ const ShowDetailInfo = ({ route }) => {
         }
       )
       .then((response) => {
-        console.log("changed fav state:", response.data);
+        //console.log("changed fav state:", response.data);
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        if (newState) {
+          handleInsertFavTv(id, posterUrl, name, date);
+        } else {
+          handleDeleteFavTv(id);
+        }
       });
   };
-  const handleBookmarkPress = () => {
+  const handleBookmarkPress = (id, posterUrl, name, date) => {
     //console.log("BookmarkPressed");
     const newState = !isInWatchlist;
     setIsInWatchlist(newState);
@@ -188,10 +256,17 @@ const ShowDetailInfo = ({ route }) => {
         }
       )
       .then((response) => {
-        console.log("changed watchlist state:", response.data);
+        // console.log("changed watchlist state:", response.data);
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        if (newState) {
+          handleInsertWatchilistTv(id, posterUrl, name, date);
+        } else {
+          handleDeleteWatchlistTv(id);
+        }
       });
   };
   const handleStarPress = () => {
@@ -218,6 +293,9 @@ const ShowDetailInfo = ({ route }) => {
         setLocalRatings={setLocalRatings}
         season_number={false}
         episode_number={false}
+        poster={showDetail.poster_path}
+        name={showDetail.name}
+        date={showDetail.first_air_date}
       />
       <ScrollView className="px-4 ">
         {showDetail.poster_path ? (
@@ -248,7 +326,12 @@ const ShowDetailInfo = ({ route }) => {
               <TouchableOpacity
                 className="items-center w-1/3 text-center"
                 onPress={() => {
-                  handleHeartPress();
+                  handleHeartPress(
+                    series_id,
+                    showDetail.poster_path,
+                    showDetail.name,
+                    showDetail.first_air_date
+                  );
                 }}
               >
                 <AntDesign
@@ -265,7 +348,12 @@ const ShowDetailInfo = ({ route }) => {
               <TouchableOpacity
                 className="items-center w-1/3 text-center"
                 onPress={() => {
-                  handleBookmarkPress();
+                  handleBookmarkPress(
+                    series_id,
+                    showDetail.poster_path,
+                    showDetail.name,
+                    showDetail.first_air_date
+                  );
                 }}
               >
                 <FontAwesome
@@ -679,9 +767,9 @@ const ShowDetailInfo = ({ route }) => {
                 episode_number: false,
               });
             }}
-            className="h-24 border-4 border-black w-[45%]"
+            className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
           >
-            <Text>More Images</Text>
+            <Text className="text-lg font-bold text-white">More Images</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -692,9 +780,19 @@ const ShowDetailInfo = ({ route }) => {
                 episode_number: false,
               });
             }}
-            className="h-24 border-4 w-[45%] border-black"
+            className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
           >
-            <Text>Related Videos</Text>
+            <Text className="text-lg font-bold text-white">Related Videos</Text>
+          </TouchableOpacity>
+        </View>
+        <View className="flex flex-row items-center w-full mt-4 justify-evenly">
+          <TouchableOpacity
+            onPress={() => {
+              navigation2.navigate("ShowReview");
+            }}
+            className="h-24 border-4 border-black w-[65%] rounded-lg bg-lime-600 justify-center items-center"
+          >
+            <Text className="text-lg font-bold text-white">See Reviews</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

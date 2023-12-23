@@ -1,4 +1,10 @@
-import React, { useEffect, useLayoutEffect, useState, useContext } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import {
   View,
   Text,
@@ -7,13 +13,20 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import {
+  insertFavMovie,
+  deleteFavMovie,
+  insertWatchlistMovie,
+  deleteWatchListMovie,
+} from "./Database";
+import Review from "./Review";
 //import { insertFlaggedMovie, fetchFlaggedMovie } from "./Database";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 import PersonProfileStack from "./PersonProfile";
 import VideoList from "./VideoList";
 import Loading from "./Loading";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Context } from "./Context";
 import { createStackNavigator } from "@react-navigation/stack";
 import VideoWebView from "./VideoWebView";
@@ -23,6 +36,7 @@ import MoreMovieAndShowImageList from "./MoreMovieAndShowImageList";
 import HorizontalFlatList from "./HorizontalFlatList";
 function MovieDetail({ route, navigation }) {
   const { movie_id, header, origin } = route.params;
+
   useLayoutEffect(() => {
     navigation.setOptions({ title: header });
   }, [navigation, header]);
@@ -33,6 +47,12 @@ function MovieDetail({ route, navigation }) {
         component={MovieDetailInfo}
         initialParams={{ movie_id: movie_id, origin: origin }}
         options={{ headerTitle: header }}
+      />
+      <Stack.Screen
+        name="MovieReview"
+        component={Review}
+        initialParams={{ id: movie_id, type: "movie" }}
+        options={{ headerTitle: `Reviews for: ${header}` }}
       />
       <Stack.Screen
         name="MovieVideoList"
@@ -61,8 +81,7 @@ const MovieDetailInfo = ({ route }) => {
   const [sliderValue, setSliderValue] = useState(5);
   const navigation2 = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const { sessionId, accountDetail, flaggedMovieList, setFlaggedMovieList } =
-    useContext(Context);
+  const { sessionId, accountDetail } = useContext(Context);
   const { movie_id, origin } = route.params;
   const [movieDetail, setMovieDetail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -72,8 +91,10 @@ const MovieDetailInfo = ({ route }) => {
   const [isRated, setIsRated] = useState(false);
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [language, setLanguage] = useState(false);
+
   const [localRatings, setLocalRatings] = useState(false);
-  //const [localFlaggedMovieList, setLocalFlaggedMovieList] = useState([]);
+  //const [favMovieList, setFavMovieList] = useState([]);
+
   const pushLocation =
     origin === "moviemain"
       ? "MainMovieDetail"
@@ -82,16 +103,54 @@ const MovieDetailInfo = ({ route }) => {
       : origin === "moviediscover"
       ? "DiscoverMovie"
       : "MyMovieDetails";
-  // const fetchFlaggedFromDatabase = async () => {
+
+  // const fetchFavMovieFromDatabase = async () => {
   //   try {
-  //     const flaggedMovieListFromDB = await fetchFlaggedMovie();
-  //     setFlaggedMovieList(flaggedMovieListFromDB);
-  //     setLocalFlaggedMovieList(flaggedMovieListFromDB);
-  //     console.log("fetched movie: ", flaggedMovieListFromDB);
+  //     const movieListFromDB = await fetchFavMovie();
+
+  //     setFavMovieList(movieListFromDB);
+  //     console.log("fetched favMovie: ", movieListFromDB);
   //   } catch (error) {
-  //     console.log("Error fetching movie list:", error);
+  //     console.log("Error fetching favMovie list:", error);
   //   }
   // };
+  const handleInsertFavMovie = async (movieId, posterImageUrl, name, date) => {
+    try {
+      await insertFavMovie(movieId, posterImageUrl, name, date);
+      //fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error inserting fav movie", error);
+    }
+  };
+  const handleInsertWatchlistMovie = async (
+    movieId,
+    posterImageUrl,
+    name,
+    date
+  ) => {
+    try {
+      await insertWatchlistMovie(movieId, posterImageUrl, name, date);
+      //  fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error inserting watchlist movie", error);
+    }
+  };
+  const handleDeleteFavMovie = async (movieId) => {
+    try {
+      await deleteFavMovie(movieId);
+      // fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error delete fav movie", error);
+    }
+  };
+  const handleDeleteWatchlistMovie = async (movieId) => {
+    try {
+      await deleteWatchListMovie(movieId);
+      //  fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error delete fav movie", error);
+    }
+  };
   const GetMovieInfo = () => {
     axios
       .get(
@@ -152,20 +211,18 @@ const MovieDetailInfo = ({ route }) => {
         setIsLoading(false);
       });
   };
-  useEffect(() => {
-    //console.log("movie id:", id);
-    // fetchFlaggedFromDatabase();
-    GetMovieInfo();
-  }, []);
-  // const handleInsertMovie = async () => {
-  //   try {
-  //     await insertFlaggedMovie(movie_id);
-  //     fetchFlaggedFromDatabase(); // Fetch updated notes after deleting a note
-  //   } catch (error) {
-  //     console.error("Error inserting movie:", error);
-  //   }
-  // };
-  const handleHeartPress = () => {
+  // useEffect(() => {
+  //   GetMovieInfo();
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      GetMovieInfo();
+    }, [])
+  );
+
+  const handleHeartPress = (posterImageUrl, movieName, date) => {
     //console.log("HeartPressed");
     const newState = !isFavorited;
     setIsFavorited(newState);
@@ -185,10 +242,14 @@ const MovieDetailInfo = ({ route }) => {
         console.error(err);
       })
       .finally(() => {
-        // handleInsertMovie(movie_id);
+        if (newState) {
+          handleInsertFavMovie(movie_id, posterImageUrl, movieName, `${date}`);
+        } else {
+          handleDeleteFavMovie(movie_id);
+        }
       });
   };
-  const handleBookmarkPress = () => {
+  const handleBookmarkPress = (posterImageUrl, movieName, date) => {
     //console.log("BookmarkPressed");
     const newState = !isInWatchlist;
     setIsInWatchlist(newState);
@@ -208,7 +269,16 @@ const MovieDetailInfo = ({ route }) => {
         console.error(err);
       })
       .finally(() => {
-        //handleInsertMovie(movie_id);
+        if (newState) {
+          handleInsertWatchlistMovie(
+            movie_id,
+            posterImageUrl,
+            movieName,
+            `${date}`
+          );
+        } else {
+          handleDeleteWatchlistMovie(movie_id);
+        }
       });
   };
   const handleStarPress = () => {
@@ -228,9 +298,12 @@ const MovieDetailInfo = ({ route }) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         isRated={isRated}
+        poster={movieDetail.poster_path}
+        name={movieDetail.title}
         sliderValue={sliderValue}
         setSliderValue={setSliderValue}
         id={movie_id}
+        date={movieDetail.release_date}
         setIsRated={setIsRated}
         type={"movie"}
         setLocalRatings={setLocalRatings}
@@ -266,7 +339,11 @@ const MovieDetailInfo = ({ route }) => {
               <TouchableOpacity
                 className="items-center w-1/3 text-center"
                 onPress={() => {
-                  handleHeartPress();
+                  handleHeartPress(
+                    movieDetail.poster_path,
+                    movieDetail.title,
+                    movieDetail.release_date
+                  );
                 }}
               >
                 <AntDesign
@@ -283,7 +360,11 @@ const MovieDetailInfo = ({ route }) => {
               <TouchableOpacity
                 className="items-center w-1/3 text-center"
                 onPress={() => {
-                  handleBookmarkPress();
+                  handleBookmarkPress(
+                    movieDetail.poster_path,
+                    movieDetail.title,
+                    movieDetail.release_date
+                  );
                 }}
               >
                 <FontAwesome
@@ -603,9 +684,9 @@ const MovieDetailInfo = ({ route }) => {
                 episode_number: false,
               });
             }}
-            className="h-24 border-4 border-black w-[45%]"
+            className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
           >
-            <Text>More Images</Text>
+            <Text className="text-lg font-bold text-white">More Images</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -616,9 +697,19 @@ const MovieDetailInfo = ({ route }) => {
                 episode_number: false,
               });
             }}
-            className="h-24 border-4 w-[45%] border-black"
+            className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
           >
-            <Text>Related Videos</Text>
+            <Text className="text-lg font-bold text-white">Related Videos</Text>
+          </TouchableOpacity>
+        </View>
+        <View className="flex flex-row items-center w-full mt-4 justify-evenly">
+          <TouchableOpacity
+            onPress={() => {
+              navigation2.navigate("MovieReview");
+            }}
+            className="h-24 border-4 border-black w-[65%] rounded-lg bg-lime-600 justify-center items-center"
+          >
+            <Text className="text-lg font-bold text-white">See Reviews</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -10,9 +10,10 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 const Stack = createStackNavigator();
 const LoginScreen = () => {
   const navigation = useNavigation();
-  const { setSessionId, approved } = useContext(Context);
+  const { setSessionId, approved, setApproved } = useContext(Context);
   const [requestToken, setRequestToken] = useState("");
-
+  const [logInButtonDisabled, setLogInButtonDisabled] = useState(false);
+  const [failedOnce, setFailedOnce] = useState(false);
   const fetchRequestToken = () => {
     setRequestToken("");
     axios
@@ -49,32 +50,50 @@ const LoginScreen = () => {
         setSessionId(response.data.session_id);
       })
       .catch((err) => {
-        console.error(err);
+        //console.error(err);
         Alert.alert("Error", "Log in failed, please try again");
-
         fetchRequestToken();
+        setLogInButtonDisabled(false);
+        setApproved(false);
+        setFailedOnce(true);
       });
   };
 
   return (
     <View className="items-center justify-center w-full">
-      <Image source={require("./assets/tmdb.png")} className="my-32" />
+      <Image source={require("./assets/tmdb.png")} className="mb-24 mt-52" />
       {requestToken ? (
         <>
-          <Button
-            title="Get approval from TMDB"
-            onPress={() => {
-              gettingApprovalClick();
-            }}
-          />
+          {failedOnce ? (
+            <Button
+              title="Retry authentication"
+              onPress={() => {
+                gettingApprovalClick();
+              }}
+            />
+          ) : (
+            <Button
+              title="Log in via TMDB account"
+              onPress={() => {
+                gettingApprovalClick();
+              }}
+            />
+          )}
           {approved ? (
             <View className="mt-4">
               <Button
-                title="Log in"
+                disabled={logInButtonDisabled}
+                title="Enter app"
                 onPress={() => {
+                  setLogInButtonDisabled(true);
                   fetchSessionId();
                 }}
               />
+              {logInButtonDisabled ? (
+                <View className="h-5 mt-6">
+                  <Loading />
+                </View>
+              ) : null}
             </View>
           ) : null}
         </>

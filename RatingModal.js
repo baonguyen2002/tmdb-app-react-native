@@ -4,6 +4,12 @@ import axios from "axios";
 import Slider from "@react-native-community/slider";
 import { Context } from "./Context";
 //import { insertFlaggedMovie, fetchFlaggedMovie } from "./Database";
+import {
+  insertRatedMovie,
+  deleteRatedMovie,
+  insertRatedTv,
+  deleteRatedTv,
+} from "./Database";
 const RatingModal = ({
   modalVisible,
   setModalVisible,
@@ -16,6 +22,9 @@ const RatingModal = ({
   setLocalRatings,
   season_number,
   episode_number,
+  poster,
+  name,
+  date,
   //setList,
 }) => {
   const { sessionId, setFlaggedMovieList } = useContext(Context);
@@ -30,7 +39,51 @@ const RatingModal = ({
   //     console.log("Error fetching movie list:", error);
   //   }
   // };
-  const handleDeletePress = () => {
+  const handleInsertRatedMovie = async (
+    movieId,
+    posterImageUrl,
+    name,
+    date,
+    value
+  ) => {
+    try {
+      await insertRatedMovie(movieId, posterImageUrl, name, date, value);
+      //fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error inserting fav movie", error);
+    }
+  };
+  const handleInsertRatedTv = async (
+    tvId,
+    posterImageUrl,
+    name,
+    date,
+    value
+  ) => {
+    try {
+      await insertRatedTv(tvId, posterImageUrl, name, date, value);
+      //fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error inserting ratedTv: ", error);
+    }
+  };
+  const handleDeleteRatedMovie = async (movieId) => {
+    try {
+      await deleteRatedMovie(movieId);
+      // fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error delete fav movie", error);
+    }
+  };
+  const handleDeleteRatedTv = async (tvId) => {
+    try {
+      await deleteRatedTv(tvId);
+      // fetchFavMovieFromDatabase(); // Fetch updated after deleting
+    } catch (error) {
+      console.error("Error delete ratedTv: ", error);
+    }
+  };
+  const handleDeletePress = (id) => {
     const setUrl = () => {
       if (typeof episode_number === "number") {
         return `https://api.themoviedb.org/3/tv/${id}/season/${season_number}/episode/${episode_number}/rating?api_key=841da308423b4b64ea4d57d052583683&session_id=${sessionId}`;
@@ -45,6 +98,14 @@ const RatingModal = ({
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        if (type === "movie") {
+          handleDeleteRatedMovie(id);
+        }
+        if (type === "tv") {
+          handleDeleteRatedTv(id);
+        }
       });
     setIsRated(false);
     setModalVisible(false);
@@ -61,7 +122,7 @@ const RatingModal = ({
   //     console.error("Error inserting movie:", error);
   //   }
   // };
-  const handleOkPress = () => {
+  const handleOkPress = (id, poster, name, date, sliderValue) => {
     const setUrl = () => {
       if (typeof episode_number === "number") {
         return `https://api.themoviedb.org/3/tv/${id}/season/${season_number}/episode/${episode_number}/rating?api_key=841da308423b4b64ea4d57d052583683&session_id=${sessionId}`;
@@ -80,7 +141,12 @@ const RatingModal = ({
         console.error(error);
       })
       .finally(() => {
-        // handleInsertMovie();
+        if (type === "movie") {
+          handleInsertRatedMovie(id, poster, name, date, sliderValue);
+        }
+        if (type === "tv") {
+          handleInsertRatedTv(id, poster, name, date, sliderValue);
+        }
       });
     setIsRated(true);
     setModalVisible(false);
@@ -126,7 +192,7 @@ const RatingModal = ({
               disabled={!isRated}
               className="items-center justify-center w-1/4 h-full"
               style={{ backgroundColor: isRated ? "red" : "#9e9e9e" }}
-              onPress={() => handleDeletePress()}
+              onPress={() => handleDeletePress(id)}
             >
               <Text className="text-center text-white">Delete</Text>
             </TouchableOpacity>
@@ -142,7 +208,9 @@ const RatingModal = ({
               </TouchableOpacity>
               <TouchableOpacity
                 className="items-center justify-center w-2/5 h-full bg-cyan-500 "
-                onPress={() => handleOkPress()}
+                onPress={() =>
+                  handleOkPress(id, poster, name, date, sliderValue)
+                }
               >
                 <Text className="text-center text-white">OK</Text>
               </TouchableOpacity>

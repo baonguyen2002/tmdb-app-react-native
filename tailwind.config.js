@@ -28,6 +28,8 @@ module.exports = {
     "./FavActorList.js",
     "./ForYouTv.js",
     "./ForYouTvSeeMore.js",
+    "./Review.js",
+    "./SplashScreen.js",
   ],
   theme: {
     extend: {},

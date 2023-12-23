@@ -20,6 +20,7 @@ const DiscoverResults = ({ route }) => {
   const [result, setResult] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [maxPage, setMaxPage] = useState(0);
+
   const { url, origin, type, navigationDestination } = route.params;
   useEffect(() => {
     console.log("url:", url, "origin:", origin);
@@ -111,20 +112,26 @@ const DiscoverResults = ({ route }) => {
         {page === 500 ? (
           <View></View>
         ) : (
-          <LinearGradient
-            // Button Linear Gradient
-            colors={["#fc3d03", "#000000", "#192f6a"]}
-            className="rounded-xl"
-            start={{ x: 0, y: 0 }} // Starting point at the top-left corner
-            end={{ x: 1, y: 1 }} // Ending point at the bottom-right corner
-          >
-            <TouchableOpacity
-              onPress={() => GoNext()}
-              className="items-center justify-center w-14 h-9 rounded-xl"
-            >
-              <AntDesign name="forward" size={24} color="white" />
-            </TouchableOpacity>
-          </LinearGradient>
+          // <LinearGradient
+          //   // Button Linear Gradient
+          //   colors={["#fc3d03", "#000000", "#192f6a"]}
+          //   className="rounded-xl"
+          //   start={{ x: 0, y: 0 }} // Starting point at the top-left corner
+          //   end={{ x: 1, y: 1 }} // Ending point at the bottom-right corner
+          // >
+          //   <TouchableOpacity
+          //     onPress={() => GoNext()}
+          //     className="items-center justify-center w-14 h-9 rounded-xl"
+          //   >
+          //     <AntDesign name="forward" size={24} color="white" />
+          //   </TouchableOpacity>
+          // </LinearGradient>
+          <Button
+            onPress={() => GoNext()}
+            title=">>"
+            color="#841584"
+            accessibilityLabel="Go to next page"
+          />
         )}
       </View>
     </>

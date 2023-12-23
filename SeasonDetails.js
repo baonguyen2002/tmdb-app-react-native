@@ -383,9 +383,9 @@ const SeasonDetails = ({ route }) => {
               episode_number: false,
             });
           }}
-          className="h-24 border-4 border-black w-[45%]"
+          className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
         >
-          <Text>More Images</Text>
+          <Text className="text-lg font-bold text-white">More Images</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -396,9 +396,9 @@ const SeasonDetails = ({ route }) => {
               episode_number: false,
             });
           }}
-          className="h-24 border-4 w-[45%] border-black"
+          className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
         >
-          <Text>Related Videos</Text>
+          <Text className="text-lg font-bold text-white">Related Videos</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

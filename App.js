@@ -102,7 +102,7 @@ const App = () => {
     setTimeout(() => {
       // Replace this with your actual logic to check the session ID
       setIsLoading(false);
-    }, 2000); // Simulating a 2-second delay
+    }, 6000); // Simulating a 2-second delay
   }, []);
 
   if (isLoading) {

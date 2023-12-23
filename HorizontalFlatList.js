@@ -88,6 +88,7 @@ class Item extends PureComponent {
       : dataType === "episode"
       ? item.still_path
       : item.poster_path;
+    const human = dataType.includes("person") ? true : false;
     const date =
       dataType === "movie"
         ? item.release_date
@@ -112,14 +113,8 @@ class Item extends PureComponent {
           // console.log(
           //   "navigationDestination:",
           //   navigationDestination,
-          //   "series_id:",
-          //   seriesId,
-          //   " season_number: ",
-          //   item.season_number,
           //   "origin:",
           //   origin,
-          //   "dataType: ",
-          //   dataType,
           //   "person_id: ",
           //   dataType.includes("person") ? item.id : null,
           //   "header: ",
@@ -144,9 +139,14 @@ class Item extends PureComponent {
             }}
             className="w-5/6 h-60"
           />
-        ) : (
+        ) : !human ? (
           <Image
             source={require("./assets/blank.png")}
+            className="w-5/6 h-60"
+          />
+        ) : (
+          <Image
+            source={require("./assets/blank_avatar.jpg")}
             className="w-5/6 h-60"
           />
         )}

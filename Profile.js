@@ -48,23 +48,23 @@ const Profile = () => {
     <ScrollView>
       {avatarPath ? (
         <Image
-          className="self-center w-40 h-40 rounded-full"
+          className="self-center w-40 h-40 mt-4 rounded-full"
           source={{
             uri: `https://image.tmdb.org/t/p/w185${avatarPath}`,
           }}
         />
       ) : (
         <Image
-          className="self-center w-40 h-40 rounded-full "
+          className="self-center w-40 h-40 mt-4 rounded-full "
           source={require("./assets/blank_avatar.jpg")}
         />
       )}
       {accountDetail.name ? (
-        <Text className="text-3xl font-extrabold text-center">
+        <Text className="mt-4 text-3xl font-extrabold text-center">
           {accountDetail.name}
         </Text>
       ) : (
-        <Text className="text-3xl font-extrabold">
+        <Text className="mt-4 text-3xl font-extrabold text-center">
           {accountDetail.username}
         </Text>
       )}
@@ -78,7 +78,7 @@ const Profile = () => {
 
       <View className="items-center w-full">
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 border-2"
+          className="items-center justify-center w-4/5 h-20 my-4 border-4 rounded-full bg-cyan-600"
           onPress={() => {
             navigation.navigate("FavoriteRatingWatchList", {
               listType: "favorite",
@@ -88,18 +88,22 @@ const Profile = () => {
             });
           }}
         >
-          <Text>Favorites Movies and Shows</Text>
+          <Text className="text-lg font-semibold text-white">
+            Favorites Movies and Shows
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 border-2"
+          className="items-center justify-center w-4/5 h-20 mb-4 border-4 rounded-full bg-cyan-600"
           onPress={() => {
             navigation.navigate("FavActorList");
           }}
         >
-          <Text>Favorite Actors</Text>
+          <Text className="text-lg font-semibold text-white">
+            Favorite Actors
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 border-2"
+          className="items-center justify-center w-4/5 h-20 mb-4 border-4 rounded-full bg-cyan-600"
           onPress={() => {
             navigation.navigate("FavoriteRatingWatchList", {
               listType: "rated",
@@ -109,11 +113,11 @@ const Profile = () => {
             });
           }}
         >
-          <Text>Ratings</Text>
+          <Text className="text-lg font-semibold text-white">Ratings</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 border-2"
+          className="items-center justify-center w-4/5 h-20 mb-4 border-4 rounded-full bg-cyan-600"
           onPress={() => {
             navigation.navigate("FavoriteRatingWatchList", {
               listType: "watchlist",
@@ -123,18 +127,18 @@ const Profile = () => {
             });
           }}
         >
-          <Text>Watchlist</Text>
+          <Text className="text-lg font-semibold text-white">Watchlist</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 border-2"
+          className="items-center justify-center w-4/5 h-20 mb-4 border-4 rounded-full bg-cyan-600"
           onPress={() => {
             navigation.navigate("Settings");
           }}
         >
-          <Text>Settings</Text>
+          <Text className="text-lg font-semibold text-white">Settings</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 border-2"
+          className="items-center justify-center w-4/5 h-20 mb-4 bg-red-600 border-4 rounded-full"
           onPress={() => {
             setSessionId(null);
             setApproved(false);
@@ -154,7 +158,7 @@ const Profile = () => {
               });
           }}
         >
-          <Text>Log Out</Text>
+          <Text className="text-lg font-semibold text-white">Log Out</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

@@ -95,7 +95,7 @@ const PersonProfile = ({ route }) => {
     }
   };
   useEffect(() => {
-    //console.log(person_id, origin);
+    console.log("Person origin: ", origin);
     fetchPersonDetail();
     fetchActorsFromDatabase();
   }, []);
@@ -217,12 +217,14 @@ const PersonProfile = ({ route }) => {
       <Text className="text-2xl font-extrabold">See more:</Text>
       <View className="flex flex-row items-center justify-evenly">
         <TouchableOpacity
-          className="w-[30%] h-24 border-2 border-orange-600"
+          className="w-[33%] h-16  bg-orange-600 justify-center items-center"
           onPress={() => {
             navigation.navigate("PersonImageList");
           }}
         >
-          <Text>More Images</Text>
+          <Text className="font-extrabold text-center text-white">
+            More Images
+          </Text>
         </TouchableOpacity>
         {/* {origin.includes("search") ? (
           <>
@@ -286,7 +288,7 @@ const PersonProfile = ({ route }) => {
 
         {origin === "tvmain" ? null : (
           <TouchableOpacity
-            className="w-[30%] h-24 border-2 border-orange-600"
+            className="w-[33%] h-16  bg-orange-600 justify-center items-center"
             onPress={() => {
               navigation.navigate("OtherMovieCredits", {
                 id: person_id,
@@ -301,12 +303,14 @@ const PersonProfile = ({ route }) => {
               });
             }}
           >
-            <Text>Other Movies</Text>
+            <Text className="font-extrabold text-center text-white">
+              Other Movies
+            </Text>
           </TouchableOpacity>
         )}
         {origin === "moviemain" ? null : (
           <TouchableOpacity
-            className="w-[30%] h-24 border-2 border-orange-600"
+            className="w-[33%] h-16  bg-orange-600 justify-center items-center"
             onPress={() => {
               navigation.navigate("OtherShowsCredits", {
                 id: person_id,
@@ -321,7 +325,9 @@ const PersonProfile = ({ route }) => {
               });
             }}
           >
-            <Text>Other Shows</Text>
+            <Text className="font-extrabold text-center text-white">
+              Other Shows
+            </Text>
           </TouchableOpacity>
         )}
       </View>
