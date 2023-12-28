@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, TouchableOpacity, FlatList, View } from "react-native";
+import { Text, TouchableOpacity, FlatList, View, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 import Loading from "./Loading";
@@ -64,15 +64,25 @@ const VideoList = ({ route }) => {
                       }
                     );
                   }}
-                  className="flex flex-row items-center h-24 p-2 my-2 rounded-2xl justify-evenly bg-violet-800"
+                  className="p-2 my-2 rounded-2xl bg-violet-800"
                 >
-                  <View className="w-4/5 px-2">
-                    <Text className="text-base font-semibold text-teal-500">
-                      {item.name}
-                    </Text>
+                  <View className="w-full h-40">
+                    <Image
+                      source={{
+                        uri: `https://i.ytimg.com/vi/${item.key}/hqdefault.jpg`,
+                      }}
+                      className="w-full h-full rounded-md"
+                    />
                   </View>
-                  <View className="items-center w-1/5">
-                    <AntDesign name="arrowright" size={32} color="#14b8a6" />
+                  <View className="flex flex-row items-center justify-between w-full px-2 mt-2">
+                    <View className="w-4/5">
+                      <Text className="text-base font-semibold text-teal-500">
+                        {item.name}
+                      </Text>
+                    </View>
+                    <View className="items-center w-1/5">
+                      <AntDesign name="arrowright" size={32} color="#14b8a6" />
+                    </View>
                   </View>
                 </TouchableOpacity>
               );
