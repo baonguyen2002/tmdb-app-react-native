@@ -45,7 +45,7 @@ const VideoList = ({ route }) => {
   return isLoading ? (
     <Loading />
   ) : (
-    <View className="px-4">
+    <View className="px-4 bg-teal-500">
       {videosLoaded && videos.length > 0 ? (
         <>
           <FlatList
@@ -64,13 +64,15 @@ const VideoList = ({ route }) => {
                       }
                     );
                   }}
-                  className="flex flex-row items-center h-24 p-2 my-2 bg-gray-300 border-2 border-green-400 rounded-2xl justify-evenly"
+                  className="flex flex-row items-center h-24 p-2 my-2 rounded-2xl justify-evenly bg-violet-800"
                 >
                   <View className="w-4/5 px-2">
-                    <Text className="text-base">{item.name}</Text>
+                    <Text className="text-base font-semibold text-teal-500">
+                      {item.name}
+                    </Text>
                   </View>
                   <View className="items-center w-1/5">
-                    <AntDesign name="arrowright" size={32} color="black" />
+                    <AntDesign name="arrowright" size={32} color="#14b8a6" />
                   </View>
                 </TouchableOpacity>
               );
@@ -80,7 +82,7 @@ const VideoList = ({ route }) => {
         </>
       ) : (
         <View className="flex items-center justify-center h-full">
-          <Text className="px-4 text-2xl font-extrabold text-center ">
+          <Text className="px-4 text-2xl font-extrabold text-center text-blue-800 ">
             {`Seems like this ${
               type.includes("season")
                 ? "season"

@@ -97,6 +97,7 @@ const ForYouMovieSeeMore = ({ route }) => {
   ) : (
     <>
       <FlatList
+        style={{ backgroundColor: "#14b8a6" }}
         data={results}
         numColumns={2}
         columnWrapperStyle={{
@@ -111,7 +112,7 @@ const ForYouMovieSeeMore = ({ route }) => {
                 origin: "moviemain",
               });
             }}
-            className="w-[48%] bg-neutral-300 mb-0.5 rounded-2xl items-center p-2 "
+            className="w-[48%] bg-teal-500 mb-0.5 rounded-2xl items-center p-2 border-2 border-violet-800"
           >
             {item.poster_path ? (
               <Image
@@ -127,26 +128,32 @@ const ForYouMovieSeeMore = ({ route }) => {
               />
             )}
 
-            <Text className="text-base font-semibold text-center">
+            <Text className="text-base font-semibold text-center text-[#0d253f]">
               {isVietnamese ? item.original_title : item.title}
             </Text>
             <View className="flex flex-row items-center w-full justify-evenly">
               {item.release_date ? (
-                <Text className="font-medium">
+                <Text className="font-medium text-violet-800">
                   Year: {item.release_date.split("-")[0]}
                 </Text>
               ) : null}
               {item.vote_average ? (
                 <Badge
                   value={item.vote_average}
-                  status="primary"
+                  status={
+                    item.vote_average > 8
+                      ? "success"
+                      : item.vote_average > 4
+                      ? "warning"
+                      : "error"
+                  }
                   badgeStyle={{
                     height: 22,
                   }}
                   textStyle={{
                     fontSize: 14,
                     fontWeight: "bold",
-                    color: "white",
+                    color: "black",
                   }}
                 />
               ) : null}
@@ -155,41 +162,63 @@ const ForYouMovieSeeMore = ({ route }) => {
         )}
         keyExtractor={(item) => item.id}
       />
-      <View className="flex flex-row items-center justify-between px-4 py-2">
+      <View className="flex flex-row items-center justify-between px-4 py-2 bg-teal-500">
         {page === 1 ? (
           <View></View>
         ) : (
-          <Button
+          // <Button
+          //   onPress={() => GoBack()}
+          //   title="<<"
+          //   color="#6b21a8"
+          //   accessibilityLabel="Go back previous page"
+          // />
+          <TouchableOpacity
+            className="items-center justify-center w-12 rounded-md h-9 bg-violet-800"
             onPress={() => GoBack()}
-            title="<<"
-            color="#841584"
-            accessibilityLabel="Go back previous page"
-          />
+          >
+            <Text className="font-extrabold text-center text-teal-500">
+              {"<<"}
+            </Text>
+          </TouchableOpacity>
         )}
         <View className="flex flex-row items-center justify-between">
-          <Text>Page: </Text>
+          <Text className="font-semibold text-blue-900">Page: </Text>
           <TextInput
             keyboardType="numeric"
             onChangeText={setcurrentPage}
             value={currentPage}
-            className="w-12 text-center"
+            className="w-12 font-semibold text-center text-blue-900"
           />
-          <Button
+          {/* <Button
             onPress={() => GoToPage()}
             title="Go"
-            color="#841584"
+            color="#6b21a8"
             accessibilityLabel="Go to specified page"
-          />
+          /> */}
+          <TouchableOpacity
+            className="items-center justify-center w-10 rounded-md h-9 bg-violet-800"
+            onPress={() => GoToPage()}
+          >
+            <Text className="font-extrabold text-center text-teal-500">Go</Text>
+          </TouchableOpacity>
         </View>
         {page === maxPage ? (
           <View></View>
         ) : (
-          <Button
+          // <Button
+          //   onPress={() => GoNext()}
+          //   title=">>"
+          //   color="#6b21a8"
+          //   accessibilityLabel="Go to next page"
+          // />
+          <TouchableOpacity
+            className="items-center justify-center w-12 rounded-md h-9 bg-violet-800"
             onPress={() => GoNext()}
-            title=">>"
-            color="#841584"
-            accessibilityLabel="Go to next page"
-          />
+          >
+            <Text className="font-extrabold text-center text-teal-500">
+              {">>"}
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     </>

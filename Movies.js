@@ -24,7 +24,15 @@ const Stack = createStackNavigator();
 
 function MovieStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#5b21b6",
+        },
+        headerTintColor: "#14b8a6",
+      }}
+    >
       <Stack.Screen
         name="ForYouMovie"
         component={ForyouMovieStack}
@@ -218,41 +226,63 @@ const Movies = () => {
           </LinearGradient>
         )}
       </View> */}
-      <View className="flex flex-row items-center justify-between px-4 py-2">
+      <View className="flex flex-row items-center justify-between px-4 py-2 bg-teal-500">
         {moviePage === 1 ? (
           <View></View>
         ) : (
-          <Button
+          // <Button
+          //   onPress={() => GoBack()}
+          //   title="<<"
+          //   color="#841584"
+          //   accessibilityLabel="Go back previous page"
+          // />
+          <TouchableOpacity
+            className="items-center justify-center w-12 rounded-md h-9 bg-violet-800"
             onPress={() => GoBack()}
-            title="<<"
-            color="#841584"
-            accessibilityLabel="Go back previous page"
-          />
+          >
+            <Text className="font-extrabold text-center text-teal-500">
+              {"<<"}
+            </Text>
+          </TouchableOpacity>
         )}
         <View className="flex flex-row items-center justify-between">
-          <Text>Page: </Text>
+          <Text className="font-semibold text-blue-900">Page: </Text>
           <TextInput
             keyboardType="numeric"
             onChangeText={setcurrentPage}
             value={currentPage}
-            className="w-12 text-center"
+            className="w-12 font-semibold text-center text-blue-900"
           />
-          <Button
+          {/* <Button
             onPress={() => GoToPage()}
             title="Go"
             color="#841584"
             accessibilityLabel="Go to specified page"
-          />
+          /> */}
+          <TouchableOpacity
+            className="items-center justify-center w-10 rounded-md h-9 bg-violet-800"
+            onPress={() => GoToPage()}
+          >
+            <Text className="font-extrabold text-center text-teal-500">Go</Text>
+          </TouchableOpacity>
         </View>
         {moviePage === maxPage ? (
           <View></View>
         ) : (
-          <Button
+          // <Button
+          //   onPress={() => GoNext()}
+          //   title=">>"
+          //   color="#841584"
+          //   accessibilityLabel="Go to next page"
+          // />
+          <TouchableOpacity
+            className="items-center justify-center w-12 rounded-md h-9 bg-violet-800"
             onPress={() => GoNext()}
-            title=">>"
-            color="#841584"
-            accessibilityLabel="Go to next page"
-          />
+          >
+            <Text className="font-extrabold text-center text-teal-500">
+              {">>"}
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     </>
@@ -260,3 +290,26 @@ const Movies = () => {
 };
 
 export default MovieStack;
+
+// screenOptions={{
+//   // headerShown: false,
+//   // tabBarActiveTintColor: '#000',
+//   // tabBarInactiveTintColor: '#fff',
+//   // tabBarShowLabel: true,
+//   tabBarStyle: {
+//     // backgroundColor: '#327B5B',
+//     position: "absolute",
+//     bottom: 0,
+//     left: 0,
+//     elevation: 0,
+//     // flex: 1,
+//     height: 50,
+//   },
+// }}
+
+//tabBarActiveTintColor: iconColorActive, // Change this to your desired active text color
+//tabBarInactiveTintColor: iconColorActiveInactive, // Change this to your desired inactive text color
+//tabBarActiveBackgroundColor: backgroundBottomNavColorActive,
+//tabBarInactiveBackgroundColor: backgroundBottomNavColorInActive,
+//headerShown: false,
+//tabBarLabelStyle: { fontSize: fontSize },

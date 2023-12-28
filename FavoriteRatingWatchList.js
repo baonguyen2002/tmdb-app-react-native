@@ -42,6 +42,8 @@ const FavoriteRatingWatchList = ({ route }) => {
           //   : origin === "ratings"
           //   ? "My Ratings"
           //   : "My Watchlist",
+          headerTintColor: "#14b8a6",
+          headerStyle: { backgroundColor: "#5b21b6" },
           headerTitleAlign: "center",
         }}
       />
@@ -52,7 +54,25 @@ const TopTabs = ({ route }) => {
   const { listType, id, sessionId } = route.params;
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={() => ({
+        headerShown: false,
+        tabBarLabelStyle: {
+          textTransform: "none",
+          fontSize: 16,
+          fontWeight: "bold",
+          color: "#14b8a6",
+        },
+
+        tabBarStyle: {
+          backgroundColor: "#5b21b6",
+        }, // Background color for the tab bar
+        //tabStyle: { backgroundColor: "orange" },
+        // tabBarActiveTintColor: "#14b8a6",
+        // tabBarInactiveTintColor: "#14b8a6",
+        tabBarIndicatorStyle: { backgroundColor: "#14b8a6" },
+      })}
+    >
       <Tab.Screen
         name="Movies"
         component={List}
@@ -255,10 +275,11 @@ const List2 = ({
         listType === "favorite" ? (
           favMovieList && favMovieList.length > 0 ? (
             <FlatList
+              style={{ backgroundColor: "#14b8a6" }}
               data={favMovieList}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+                  className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
                   onPress={() => {
                     navigation.navigate("MyMovieDetails", {
                       movie_id: item.favMovieId,
@@ -283,9 +304,11 @@ const List2 = ({
                     )}
                   </View>
                   <View className="flex items-start justify-center w-[71%]  ">
-                    <Text className="text-lg font-bold">{item.name}</Text>
+                    <Text className="text-lg font-bold text-[#0d253f]">
+                      {item.name}
+                    </Text>
                     {item.releaseDate ? (
-                      <Text className="font-light">
+                      <Text className="font-light text-violet-800">
                         {"Release date: " + item.releaseDate}
                       </Text>
                     ) : null}
@@ -295,8 +318,8 @@ const List2 = ({
               keyExtractor={(item) => item.favMovieId}
             />
           ) : (
-            <View className="flex items-center justify-center w-full h-full">
-              <Text className="px-4 text-2xl font-extrabold text-center ">
+            <View className="flex items-center justify-center w-full h-full bg-teal-500">
+              <Text className="px-4 text-2xl font-extrabold text-center text-blue-800 ">
                 Seems like there are no items at the moment, let's add some to
                 this list!
               </Text>
@@ -305,10 +328,11 @@ const List2 = ({
         ) : listType === "watchlist" ? (
           watchMovieList && watchMovieList.length > 0 ? (
             <FlatList
+              style={{ backgroundColor: "#14b8a6" }}
               data={watchMovieList}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+                  className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
                   onPress={() => {
                     navigation.navigate("MyMovieDetails", {
                       movie_id: item.watchlistMovieId,
@@ -333,9 +357,11 @@ const List2 = ({
                     )}
                   </View>
                   <View className="flex items-start justify-center w-[71%]  ">
-                    <Text className="text-lg font-bold">{item.name}</Text>
+                    <Text className="text-lg font-bold text-[#0d253f]">
+                      {item.name}
+                    </Text>
                     {item.releaseDate ? (
-                      <Text className="font-light">
+                      <Text className="font-light text-violet-800">
                         {"Release date: " + item.releaseDate}
                       </Text>
                     ) : null}
@@ -345,8 +371,8 @@ const List2 = ({
               keyExtractor={(item) => item.watchlistMovieId}
             />
           ) : (
-            <View className="flex items-center justify-center w-full h-full">
-              <Text className="px-4 text-2xl font-extrabold text-center ">
+            <View className="flex items-center justify-center w-full h-full bg-teal-500">
+              <Text className="px-4 text-2xl font-extrabold text-center text-blue-800 ">
                 Seems like there are no items at the moment, let's add some to
                 this list!
               </Text>
@@ -354,10 +380,11 @@ const List2 = ({
           )
         ) : ratedMovieList && ratedMovieList.length > 0 ? (
           <FlatList
+            style={{ backgroundColor: "#14b8a6" }}
             data={ratedMovieList}
             renderItem={({ item }) => (
               <TouchableOpacity
-                className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+                className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
                 onPress={() => {
                   navigation.navigate("MyMovieDetails", {
                     movie_id: item.ratedMovieId,
@@ -382,9 +409,11 @@ const List2 = ({
                   )}
                 </View>
                 <View className="flex items-start justify-center w-[71%]  ">
-                  <Text className="text-lg font-bold">{item.name}</Text>
+                  <Text className="text-lg font-bold text-[#0d253f]">
+                    {item.name}
+                  </Text>
                   {item.releaseDate ? (
-                    <Text className="font-light">
+                    <Text className="font-light text-violet-800">
                       {"Release date: " + item.releaseDate}
                     </Text>
                   ) : null}
@@ -392,14 +421,20 @@ const List2 = ({
                     <Text className="font-semibold">Your rating: </Text>
                     <Badge
                       value={item.ratedValue}
-                      status="primary"
+                      status={
+                        item.ratedValue > 8
+                          ? "success"
+                          : item.ratedValue > 4
+                          ? "warning"
+                          : "error"
+                      }
                       badgeStyle={{
                         height: 22,
                       }}
                       textStyle={{
                         fontSize: 14,
                         fontWeight: "bold",
-                        color: "white",
+                        color: "black",
                       }}
                     />
                   </View>
@@ -409,8 +444,8 @@ const List2 = ({
             keyExtractor={(item) => item.ratedMovieId}
           />
         ) : (
-          <View className="flex items-center justify-center w-full h-full">
-            <Text className="px-4 text-2xl font-extrabold text-center ">
+          <View className="flex items-center justify-center w-full h-full bg-teal-500">
+            <Text className="px-4 text-2xl font-extrabold text-center text-blue-800 ">
               Seems like there are no items at the moment, let's add some to
               this list!
             </Text>
@@ -419,10 +454,11 @@ const List2 = ({
       ) : listType === "favorite" ? (
         favTvList && favTvList.length > 0 ? (
           <FlatList
+            style={{ backgroundColor: "#14b8a6" }}
             data={favTvList}
             renderItem={({ item }) => (
               <TouchableOpacity
-                className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+                className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
                 onPress={() => {
                   navigation.navigate("MyTvDetails", {
                     series_id: item.favTvId,
@@ -447,10 +483,12 @@ const List2 = ({
                   )}
                 </View>
                 <View className="flex items-start justify-center w-[71%]  ">
-                  <Text className="text-lg font-bold">{item.name}</Text>
+                  <Text className="text-lg font-bold text-[#0d253f]">
+                    {item.name}
+                  </Text>
                   {item.firstAirDate ? (
-                    <Text className="font-light">
-                      {"Release date: " + item.firstAirDate}
+                    <Text className="font-light text-violet-800">
+                      {"First aired date: " + item.firstAirDate}
                     </Text>
                   ) : null}
                 </View>
@@ -459,8 +497,8 @@ const List2 = ({
             keyExtractor={(item) => item.favTvId}
           />
         ) : (
-          <View className="flex items-center justify-center w-full h-full">
-            <Text className="px-4 text-2xl font-extrabold text-center ">
+          <View className="flex items-center justify-center w-full h-full bg-teal-500">
+            <Text className="px-4 text-2xl font-extrabold text-center text-blue-800 ">
               Seems like there are no items at the moment, let's add some to
               this list!
             </Text>
@@ -469,10 +507,11 @@ const List2 = ({
       ) : listType === "watchlist" ? (
         watchlistTv && watchlistTv.length > 0 ? (
           <FlatList
+            style={{ backgroundColor: "#14b8a6" }}
             data={watchlistTv}
             renderItem={({ item }) => (
               <TouchableOpacity
-                className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+                className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
                 onPress={() => {
                   navigation.navigate("MyTvDetails", {
                     series_id: item.watchlistTvId,
@@ -497,10 +536,12 @@ const List2 = ({
                   )}
                 </View>
                 <View className="flex items-start justify-center w-[71%]  ">
-                  <Text className="text-lg font-bold">{item.name}</Text>
+                  <Text className="text-lg font-bold text-[#0d253f]">
+                    {item.name}
+                  </Text>
                   {item.firstAirDate ? (
-                    <Text className="font-light">
-                      {"Release date: " + item.firstAirDate}
+                    <Text className="font-light text-violet-800">
+                      {"First aired date: " + item.firstAirDate}
                     </Text>
                   ) : null}
                 </View>
@@ -509,8 +550,8 @@ const List2 = ({
             keyExtractor={(item) => item.watchlistTvId}
           />
         ) : (
-          <View className="flex items-center justify-center w-full h-full">
-            <Text className="px-4 text-2xl font-extrabold text-center ">
+          <View className="flex items-center justify-center w-full h-full bg-teal-500">
+            <Text className="px-4 text-2xl font-extrabold text-center text-blue-800 ">
               Seems like there are no items at the moment, let's add some to
               this list!
             </Text>
@@ -518,10 +559,11 @@ const List2 = ({
         )
       ) : ratedTv && ratedTv.length > 0 ? (
         <FlatList
+          style={{ backgroundColor: "#14b8a6" }}
           data={ratedTv}
           renderItem={({ item }) => (
             <TouchableOpacity
-              className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+              className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
               onPress={() => {
                 navigation.navigate("MyTvDetails", {
                   series_id: item.ratedTvId,
@@ -546,24 +588,32 @@ const List2 = ({
                 )}
               </View>
               <View className="flex items-start justify-center w-[71%]  ">
-                <Text className="text-lg font-bold">{item.name}</Text>
+                <Text className="text-lg font-bold text-[#0d253f]">
+                  {item.name}
+                </Text>
                 {item.firstAirDate ? (
-                  <Text className="font-light">
-                    {"Release date: " + item.firstAirDate}
+                  <Text className="font-light text-violet-800">
+                    {"First aired date: " + item.firstAirDate}
                   </Text>
                 ) : null}
                 <View className="flex flex-row items-center">
                   <Text className="font-semibold">Your rating: </Text>
                   <Badge
                     value={item.ratedValue}
-                    status="primary"
+                    status={
+                      item.ratedValue > 8
+                        ? "success"
+                        : item.ratedValue > 4
+                        ? "warning"
+                        : "error"
+                    }
                     badgeStyle={{
                       height: 22,
                     }}
                     textStyle={{
                       fontSize: 14,
                       fontWeight: "bold",
-                      color: "white",
+                      color: "black",
                     }}
                   />
                 </View>
@@ -573,8 +623,8 @@ const List2 = ({
           keyExtractor={(item) => item.ratedTvId}
         />
       ) : (
-        <View className="flex items-center justify-center w-full h-full">
-          <Text className="px-4 text-2xl font-extrabold text-center ">
+        <View className="flex items-center justify-center w-full h-full bg-teal-500">
+          <Text className="px-4 text-2xl font-extrabold text-center text-blue-800 ">
             Seems like there are no items at the moment, let's add some to this
             list!
           </Text>

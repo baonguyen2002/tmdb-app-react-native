@@ -17,21 +17,16 @@ import { setUpDatabase } from "./Database";
 function MyTabs() {
   return (
     <Tab.Navigator
-    // screenOptions={{
-    //   // headerShown: false,
-    //   // tabBarActiveTintColor: '#000',
-    //   // tabBarInactiveTintColor: '#fff',
-    //   // tabBarShowLabel: true,
-    //   tabBarStyle: {
-    //     // backgroundColor: '#327B5B',
-    //     position: "absolute",
-    //     bottom: 0,
-    //     left: 0,
-    //     elevation: 0,
-    //     // flex: 1,
-    //     height: 50,
-    //   },
-    // }}
+      screenOptions={{
+        tabBarActiveBackgroundColor: "#14b8a6",
+        tabBarInactiveBackgroundColor: "#5b21b6",
+        tabBarActiveTintColor: "#1e40af",
+        tabBarInactiveTintColor: "#14b8a6",
+        tabBarLabelStyle: {
+          fontWeight: "bold",
+          fontSize: 13,
+        },
+      }}
     >
       <Tab.Screen
         name="MoviesStack"
@@ -39,8 +34,12 @@ function MyTabs() {
         options={{
           headerShown: false,
           tabBarLabel: "Movies",
-          tabBarIcon: () => (
-            <MaterialIcons name="movie" size={24} color="#187fba" />
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="movie"
+              size={24}
+              color={focused ? "#1e40af" : "#14b8a6"}
+            />
           ),
         }}
       />
@@ -50,7 +49,13 @@ function MyTabs() {
         options={{
           headerShown: false,
           tabBarLabel: "TV Shows",
-          tabBarIcon: () => <Entypo name="tv" size={24} color="#187fba" />,
+          tabBarIcon: ({ focused }) => (
+            <Entypo
+              name="tv"
+              size={24}
+              color={focused ? "#1e40af" : "#14b8a6"}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -59,8 +64,12 @@ function MyTabs() {
         options={{
           headerShown: false,
           tabBarLabel: "Discover",
-          tabBarIcon: () => (
-            <FontAwesome name="filter" size={24} color="#187fba" />
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name="filter"
+              size={24}
+              color={focused ? "#1e40af" : "#14b8a6"}
+            />
           ),
         }}
       />
@@ -69,8 +78,12 @@ function MyTabs() {
         component={Search}
         options={{
           headerShown: false,
-          tabBarIcon: () => (
-            <FontAwesome name="search" size={24} color="#187fba" />
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name="search"
+              size={24}
+              color={focused ? "#1e40af" : "#14b8a6"}
+            />
           ),
         }}
       />
@@ -80,8 +93,12 @@ function MyTabs() {
         options={{
           headerShown: false,
           tabBarLabel: "Profile",
-          tabBarIcon: () => (
-            <FontAwesome name="user" size={24} color="#187fba" />
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name="user"
+              size={24}
+              color={focused ? "#1e40af" : "#14b8a6"}
+            />
           ),
         }}
       />

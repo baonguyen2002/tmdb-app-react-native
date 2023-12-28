@@ -45,7 +45,7 @@ const Profile = () => {
     fetchAccountInfo();
   }, []);
   return accountDetail ? (
-    <ScrollView>
+    <ScrollView className="bg-teal-500">
       {avatarPath ? (
         <Image
           className="self-center w-40 h-40 mt-4 rounded-full"
@@ -60,11 +60,11 @@ const Profile = () => {
         />
       )}
       {accountDetail.name ? (
-        <Text className="mt-4 text-3xl font-extrabold text-center">
+        <Text className="mt-4 text-3xl font-extrabold text-center text-[#0d253f]">
           {accountDetail.name}
         </Text>
       ) : (
-        <Text className="mt-4 text-3xl font-extrabold text-center">
+        <Text className="mt-4 text-3xl font-extrabold text-center text-[#0d253f]">
           {accountDetail.username}
         </Text>
       )}
@@ -78,7 +78,7 @@ const Profile = () => {
 
       <View className="items-center w-full">
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 my-4 border-4 rounded-full bg-cyan-600"
+          className="items-center justify-center w-4/5 h-20 my-4 rounded-full bg-violet-800"
           onPress={() => {
             navigation.navigate("FavoriteRatingWatchList", {
               listType: "favorite",
@@ -88,22 +88,22 @@ const Profile = () => {
             });
           }}
         >
-          <Text className="text-lg font-semibold text-white">
+          <Text className="text-lg font-semibold text-teal-500">
             Favorites Movies and Shows
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 mb-4 border-4 rounded-full bg-cyan-600"
+          className="items-center justify-center w-4/5 h-20 my-4 rounded-full bg-violet-800"
           onPress={() => {
             navigation.navigate("FavActorList");
           }}
         >
-          <Text className="text-lg font-semibold text-white">
+          <Text className="text-lg font-semibold text-teal-500">
             Favorite Actors
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 mb-4 border-4 rounded-full bg-cyan-600"
+          className="items-center justify-center w-4/5 h-20 my-4 rounded-full bg-violet-800"
           onPress={() => {
             navigation.navigate("FavoriteRatingWatchList", {
               listType: "rated",
@@ -113,11 +113,11 @@ const Profile = () => {
             });
           }}
         >
-          <Text className="text-lg font-semibold text-white">Ratings</Text>
+          <Text className="text-lg font-semibold text-teal-500">Ratings</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 mb-4 border-4 rounded-full bg-cyan-600"
+          className="items-center justify-center w-4/5 h-20 my-4 rounded-full bg-violet-800"
           onPress={() => {
             navigation.navigate("FavoriteRatingWatchList", {
               listType: "watchlist",
@@ -127,18 +127,18 @@ const Profile = () => {
             });
           }}
         >
-          <Text className="text-lg font-semibold text-white">Watchlist</Text>
+          <Text className="text-lg font-semibold text-teal-500">Watchlist</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 mb-4 border-4 rounded-full bg-cyan-600"
+          className="items-center justify-center w-4/5 h-20 my-4 rounded-full bg-violet-800"
           onPress={() => {
             navigation.navigate("Settings");
           }}
         >
-          <Text className="text-lg font-semibold text-white">Settings</Text>
+          <Text className="text-lg font-semibold text-teal-500">Settings</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="items-center justify-center w-4/5 h-20 mb-4 bg-red-600 border-4 rounded-full"
+          className="items-center justify-center w-4/5 h-20 my-4 bg-red-600 border-4 rounded-full"
           onPress={() => {
             setSessionId(null);
             setApproved(false);
@@ -173,7 +173,11 @@ const ProfileStack = () => {
       <Stack.Screen
         name="Profile"
         component={Profile}
-        options={{ headerTitleAlign: "center" }}
+        options={{
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: "#5b21b6" },
+          headerTitleStyle: { color: "#14b8a6" },
+        }}
       />
       <Stack.Screen
         name="FavActorList"
@@ -206,6 +210,8 @@ const ProfileStack = () => {
         options={{
           headerTitleAlign: "center",
           headerTitle: "Set your preferences",
+          headerStyle: { backgroundColor: "#5b21b6" },
+          headerTitleStyle: { color: "#14b8a6" },
         }}
       />
     </Stack.Navigator>

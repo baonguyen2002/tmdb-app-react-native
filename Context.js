@@ -71,15 +71,15 @@ export const ContextProvider = ({ children }) => {
         console.log("Error fetching favTvGenre list:", error);
       }
     };
-    fetchActorsFromDatabase();
-    fetchFavMovieGenreFromDatabase();
-    fetchFavTvGenreFromDatabase();
+    // fetchActorsFromDatabase();
+    // fetchFavMovieGenreFromDatabase();
+    // fetchFavTvGenreFromDatabase();
     // fetchFlaggedMovieFromDatabase();
     // fetchFlaggedTvFromDatabase();
   }, []);
-  useEffect(() => {
-    "changed";
-  }, [favMovieGenreList, favTvGenreList]);
+  // useEffect(() => {
+  //   "changed";
+  // }, [favMovieGenreList, favTvGenreList]);
   return (
     <Context.Provider
       value={{

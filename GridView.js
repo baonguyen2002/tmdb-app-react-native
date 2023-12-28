@@ -26,6 +26,7 @@ const GridView = ({ data, dataType, navigationDestination, origin }) => {
 
   return (
     <FlatList
+      className="bg-teal-500"
       columnWrapperStyle={{
         justifyContent: "space-evenly",
       }}
@@ -58,7 +59,7 @@ class Item extends PureComponent {
             origin: origin,
           });
         }}
-        className="w-[48%] bg-neutral-300 mb-0.5 rounded-2xl items-center p-2 "
+        className="w-[48%] bg-teal-500 mb-0.5 rounded-2xl items-center p-2 border-2 border-violet-800"
       >
         {item.poster_path ? (
           <Image
@@ -74,22 +75,32 @@ class Item extends PureComponent {
           />
         )}
 
-        <Text className="text-base font-semibold text-center">{header}</Text>
+        <Text className="text-base font-semibold text-center text-[#0d253f]">
+          {header}
+        </Text>
         <View className="flex flex-row items-center w-full justify-evenly">
           {date ? (
-            <Text className="font-medium">Year: {date.split("-")[0]}</Text>
+            <Text className="font-medium text-violet-800">
+              Year: {date.split("-")[0]}
+            </Text>
           ) : null}
           {item.vote_average ? (
             <Badge
               value={item.vote_average}
-              status="primary"
+              status={
+                item.vote_average > 8
+                  ? "success"
+                  : item.vote_average > 4
+                  ? "warning"
+                  : "error"
+              }
               badgeStyle={{
                 height: 22,
               }}
               textStyle={{
                 fontSize: 14,
                 fontWeight: "bold",
-                color: "white",
+                color: "black",
               }}
             />
           ) : null}

@@ -15,7 +15,13 @@ const PersonProfileStack = ({ route }) => {
   const { person_id, origin, header } = route.params;
 
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerTintColor: "#14b8a6",
+        headerStyle: { backgroundColor: "#5b21b6" },
+      }}
+    >
       <Stack.Screen
         name="PersonProfile"
         component={PersonProfile}
@@ -112,7 +118,7 @@ const PersonProfile = ({ route }) => {
       });
   };
   return (
-    <ScrollView className="px-4">
+    <ScrollView className="px-4 bg-teal-500">
       {personDetail.profile_path ? (
         <Image
           source={{
@@ -126,103 +132,116 @@ const PersonProfile = ({ route }) => {
           className="self-center w-full h-[455] rounded-lg mt-4"
         />
       )}
-      {personDetail.name ? (
-        <Text className="mt-4 text-3xl font-bold text-center">
-          {personDetail.name}
-        </Text>
-      ) : null}
-      <TouchableOpacity
-        className="items-center w-full text-center"
-        onPress={() => {
-          handleHeartPress(
-            personDetail.id,
-            personDetail.profile_path ? personDetail.profile_path : null,
-            personDetail.name
-          );
-        }}
-      >
-        <AntDesign
-          name={isFavorited ? "heart" : "hearto"}
-          size={30}
-          color={isFavorited ? "fuchsia" : "black"}
-        />
-        {isFavorited ? <Text>Favorited</Text> : <Text>Add to Favorites</Text>}
-      </TouchableOpacity>
-      {personDetail.birthday ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">Born: </Text>
-          {personDetail.birthday}
-        </Text>
-      ) : null}
-      {personDetail.deathday ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">Died: </Text>
-          {personDetail.deathday}
-        </Text>
-      ) : null}
-      {personDetail.place_of_birth ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">
-            Place of birth:{" "}
+      <View className="p-3 bg-blue-100 border-2 rounded-md border-violet-800">
+        {personDetail.name ? (
+          <Text className="mt-4 text-3xl font-bold text-center">
+            {personDetail.name}
           </Text>
-          {personDetail.place_of_birth}
-        </Text>
-      ) : null}
-      {personDetail.gender ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">Gender: </Text>
-          {personDetail.gender === 1
-            ? "Female"
-            : personDetail.gender === 2
-            ? "Male"
-            : "Non-binary"}
-        </Text>
-      ) : null}
-      {personDetail.biography ? (
-        <>
-          <Text className="text-lg font-semibold">Biography:</Text>
-          <Text className="text-base">
-            {displayText(personDetail.biography)}
-          </Text>
-          {personDetail.biography.length > 200 && (
-            <TouchableOpacity
-              onPress={() => {
-                toggleReadMore();
-              }}
-              className="self-center w-24 border-2 border-teal-500 rounded-xl"
-            >
-              <Text className="text-center">
-                {showFullText ? "Show Less" : "Show More"}
-              </Text>
-            </TouchableOpacity>
-          )}
-        </>
-      ) : null}
-      {personDetail.popularity ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">Popularity: </Text>
-          {personDetail.popularity}
-        </Text>
-      ) : null}
-      {personDetail.also_known_as && personDetail.also_known_as.length > 0 ? (
-        <>
-          <Text className="text-lg font-semibold">Also known as: </Text>
-          {personDetail.also_known_as.map((item) => (
-            <View key={item} style={{ width: "100%", paddingHorizontal: 8 }}>
-              <Text style={{ fontSize: 16, fontWeight: "300" }}>{item}</Text>
-            </View>
-          ))}
-        </>
-      ) : null}
-      <Text className="text-2xl font-extrabold">See more:</Text>
-      <View className="flex flex-row items-center justify-evenly">
+        ) : null}
         <TouchableOpacity
-          className="w-[33%] h-16  bg-orange-600 justify-center items-center"
+          className="items-center w-full text-center"
+          onPress={() => {
+            handleHeartPress(
+              personDetail.id,
+              personDetail.profile_path ? personDetail.profile_path : null,
+              personDetail.name
+            );
+          }}
+        >
+          <AntDesign
+            name={isFavorited ? "heart" : "hearto"}
+            size={30}
+            color={isFavorited ? "fuchsia" : "black"}
+          />
+          {isFavorited ? <Text>Favorited</Text> : <Text>Add to Favorites</Text>}
+        </TouchableOpacity>
+        {personDetail.birthday ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">Born: </Text>
+            {personDetail.birthday}
+          </Text>
+        ) : null}
+        {personDetail.deathday ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">Died: </Text>
+            {personDetail.deathday}
+          </Text>
+        ) : null}
+        {personDetail.place_of_birth ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">
+              Place of birth:{" "}
+            </Text>
+            {personDetail.place_of_birth}
+          </Text>
+        ) : null}
+        {personDetail.gender ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">Gender: </Text>
+            {personDetail.gender === 1
+              ? "Female"
+              : personDetail.gender === 2
+              ? "Male"
+              : "Non-binary"}
+          </Text>
+        ) : null}
+        {personDetail.biography ? (
+          <>
+            <Text className="text-lg font-semibold">Biography:</Text>
+            <Text className="text-base">
+              {displayText(personDetail.biography)}
+            </Text>
+            {personDetail.biography.length > 200 && (
+              <TouchableOpacity
+                onPress={() => {
+                  toggleReadMore();
+                }}
+                className="self-center w-24 border-2 border-teal-500 rounded-xl"
+              >
+                <Text className="text-center">
+                  {showFullText ? "Show Less" : "Show More"}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </>
+        ) : null}
+        {personDetail.popularity ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">
+              Popularity:{" "}
+            </Text>
+            {personDetail.popularity}
+          </Text>
+        ) : null}
+        {personDetail.also_known_as && personDetail.also_known_as.length > 0 ? (
+          <>
+            <Text className="text-lg font-semibold">Also known as: </Text>
+            {personDetail.also_known_as.map((item) => (
+              <View key={item} style={{ width: "100%", paddingHorizontal: 8 }}>
+                <Text style={{ fontSize: 16, fontWeight: "300" }}>{item}</Text>
+              </View>
+            ))}
+          </>
+        ) : null}
+      </View>
+
+      <View
+        style={{
+          padding: 16,
+          //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+        }}
+        className="backdrop-blur-3xl"
+      >
+        <Text className="text-2xl font-extrabold ">See more:</Text>
+      </View>
+      <View className="flex flex-row items-center mb-3 justify-evenly">
+        <TouchableOpacity
+          className="w-[33%] h-14  bg-violet-800 justify-center items-center rounded-md"
           onPress={() => {
             navigation.navigate("PersonImageList");
           }}
         >
-          <Text className="font-extrabold text-center text-white">
+          <Text className="font-extrabold text-center text-teal-500">
             More Images
           </Text>
         </TouchableOpacity>
@@ -288,7 +307,7 @@ const PersonProfile = ({ route }) => {
 
         {origin === "tvmain" ? null : (
           <TouchableOpacity
-            className="w-[33%] h-16  bg-orange-600 justify-center items-center"
+            className="w-[33%] h-14  bg-violet-800 justify-center items-center rounded-md"
             onPress={() => {
               navigation.navigate("OtherMovieCredits", {
                 id: person_id,
@@ -303,14 +322,14 @@ const PersonProfile = ({ route }) => {
               });
             }}
           >
-            <Text className="font-extrabold text-center text-white">
+            <Text className="font-extrabold text-center text-teal-500">
               Other Movies
             </Text>
           </TouchableOpacity>
         )}
         {origin === "moviemain" ? null : (
           <TouchableOpacity
-            className="w-[33%] h-16  bg-orange-600 justify-center items-center"
+            className="w-[33%] h-14  bg-violet-800 justify-center items-center rounded-md"
             onPress={() => {
               navigation.navigate("OtherShowsCredits", {
                 id: person_id,
@@ -325,7 +344,7 @@ const PersonProfile = ({ route }) => {
               });
             }}
           >
-            <Text className="font-extrabold text-center text-white">
+            <Text className="font-extrabold text-center text-teal-500">
               Other Shows
             </Text>
           </TouchableOpacity>

@@ -48,7 +48,7 @@ const HorizontalFlatList = ({
 
   return (
     <FlatList
-      className="mb-4"
+      className="mb-4 bg-teal-500"
       data={data}
       initialNumToRender={5}
       maxToRenderPerBatch={7}
@@ -108,7 +108,7 @@ class Item extends PureComponent {
 
     return (
       <TouchableOpacity
-        className="items-center py-3  mx-1 bg-gray-300 rounded-lg w-[180]"
+        className="items-center py-3  mx-1 border-2 border-violet-800 rounded-lg w-[180]"
         onPress={() => {
           // console.log(
           //   "navigationDestination:",
@@ -151,25 +151,35 @@ class Item extends PureComponent {
           />
         )}
 
-        <Text className="text-base font-bold text-center">{header}</Text>
+        <Text className="text-base font-bold text-center text-blue-800">
+          {header}
+        </Text>
         {level2Text ? (
-          <Text className="text-sm font-bold text-center">{role}</Text>
+          <Text className="text-sm font-bold text-center text-[#0d253f]">
+            {role}
+          </Text>
         ) : null}
         {level3Text ? (
           <View className="flex flex-row items-center justify-evenly">
             {date ? (
-              <Text className="w-1/3 text-sm font-medium ">
+              <Text className="w-1/3 text-sm font-medium text-violet-800">
                 {date.split("-")[0]}
               </Text>
             ) : null}
             <Badge
               value={item.vote_average}
-              status="primary"
+              status={
+                item.vote_average > 8
+                  ? "success"
+                  : item.vote_average > 4
+                  ? "warning"
+                  : "error"
+              }
               badgeStyle={{ height: 22 }}
               textStyle={{
                 fontSize: 15,
                 fontWeight: "bold",
-                color: "white",
+                color: "black",
               }}
               className="w-1/3"
             />

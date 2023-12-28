@@ -30,7 +30,13 @@ const EpisodeDetailsStack = ({ route }) => {
   const { series_id, header, origin, season_number, episode_number } =
     route.params;
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerStyle: { backgroundColor: "#5b21b6" },
+        headerTintColor: "#14b8a6",
+      }}
+    >
       <Stack.Screen
         name="EpisodeDetails"
         component={EpisodeDetails}
@@ -79,18 +85,7 @@ const EpisodeDetails = ({ route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({ title: header });
   }, [navigation, header]);
-  function truncateName(str) {
-    if (str.length > 22) {
-      return str.slice(0, 15) + "...";
-    }
-    return str;
-  }
-  function truncateRole(str) {
-    if (str.length > 40) {
-      return str.slice(0, 40) + "...";
-    }
-    return str;
-  }
+
   const fetchDetails = () => {
     axios
       .get(
@@ -137,7 +132,7 @@ const EpisodeDetails = ({ route }) => {
   return isLoading ? (
     <Loading />
   ) : (
-    <ScrollView className="w-full px-4">
+    <ScrollView className="w-full px-4 bg-teal-500">
       <RatingModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -151,6 +146,7 @@ const EpisodeDetails = ({ route }) => {
         episode_number={episode_number}
         setLocalRatings={setLocalRatings}
       />
+
       {details.still_path ? (
         <Image
           source={{
@@ -164,11 +160,12 @@ const EpisodeDetails = ({ route }) => {
           className="self-center w-full h-[455] rounded-lg mt-4"
         />
       )}
-      <Text className="mt-4 text-3xl font-bold text-center">
-        {details.name}
-      </Text>
-      <View className="flex flex-row w-full justify-evenly">
-        {/* <TouchableOpacity
+      <View className="p-3 bg-blue-100 border-2 rounded-md border-violet-800">
+        <Text className="mt-4 text-3xl font-bold text-center">
+          {details.name}
+        </Text>
+        <View className="flex flex-row w-full justify-evenly">
+          {/* <TouchableOpacity
           className="items-center w-1/3 text-center"
           onPress={() => {
             handleStarPress();
@@ -185,60 +182,96 @@ const EpisodeDetails = ({ route }) => {
             <Text>Add your rating</Text>
           )}
         </TouchableOpacity> */}
+        </View>
+        {isRated.value ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">
+              Your rating:{" "}
+            </Text>
+            {isRated.value}
+          </Text>
+        ) : localRatings ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">
+              Your rating:{" "}
+            </Text>
+            {localRatings}
+          </Text>
+        ) : null}
+        {details.overview ? (
+          <>
+            <Text className="text-lg font-semibold">Sypnosis:</Text>
+            <Text className="text-base">{details.overview}</Text>
+          </>
+        ) : null}
+        {details.vote_average ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">Ratings: </Text>
+            {details.vote_average}
+            {details.vote_count ? (
+              <>
+                <Text className="text-lg font-semibold text-black"> from </Text>
+                <Text>{details.vote_count} votes</Text>
+              </>
+            ) : null}
+          </Text>
+        ) : null}
+        {details.air_date ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">Air date: </Text>
+            {details.air_date}
+          </Text>
+        ) : null}
+        {details.runtime ? (
+          <Text className="mb-2 text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">Runtime: </Text>
+            {details.runtime === 1
+              ? `${details.runtime} minute`
+              : `${details.runtime} minutes`}
+          </Text>
+        ) : null}
       </View>
-      {isRated.value ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">
-            Your rating:{" "}
+      <View className="flex flex-row items-center w-full my-3 justify-evenly">
+        <TouchableOpacity
+          onPress={() => {
+            navigation.push("MoreEpisodeImages", {
+              id: series_id,
+              type: "tvepisode",
+              season_number: season_number,
+              episode_number: episode_number,
+            });
+          }}
+          className="h-16  w-[48%] rounded-lg bg-violet-800 justify-center items-center"
+        >
+          <Text className="text-lg font-bold text-teal-500">More Images</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.push("EpisodeVideoList", {
+              id: series_id,
+              type: "tvepisode",
+              season_number: season_number,
+              episode_number: episode_number,
+            });
+          }}
+          className="h-16  w-[48%] rounded-lg bg-violet-800 justify-center items-center"
+        >
+          <Text className="text-lg font-bold text-teal-500">
+            Related Videos
           </Text>
-          {isRated.value}
-        </Text>
-      ) : localRatings ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">
-            Your rating:{" "}
-          </Text>
-          {localRatings}
-        </Text>
-      ) : null}
-      {details.overview ? (
-        <>
-          <Text className="text-lg font-semibold">Sypnosis:</Text>
-          <Text className="text-base">{details.overview}</Text>
-        </>
-      ) : null}
-
-      {details.vote_average ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">Ratings: </Text>
-          {details.vote_average}
-          {details.vote_count ? (
-            <>
-              <Text className="text-lg font-semibold text-black"> from </Text>
-              <Text>{details.vote_count} votes</Text>
-            </>
-          ) : null}
-        </Text>
-      ) : null}
-
-      {details.air_date ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">Air date: </Text>
-          {details.air_date}
-        </Text>
-      ) : null}
-      {details.runtime ? (
-        <Text className="mb-2 text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">Runtime: </Text>
-          {details.runtime === 1
-            ? `${details.runtime} minute`
-            : `${details.runtime} minutes`}
-        </Text>
-      ) : null}
-
+        </TouchableOpacity>
+      </View>
       {crew && crew.length > 0 ? (
         <>
-          <Text className="text-2xl font-extrabold">Crew:</Text>
+          <View
+            style={{
+              padding: 16,
+              //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+            }}
+            className="backdrop-blur-3xl"
+          >
+            <Text className="text-2xl font-extrabold ">Crew:</Text>
+          </View>
           {/* <FlatList
             className="mb-4"
             data={crew}
@@ -298,7 +331,15 @@ const EpisodeDetails = ({ route }) => {
       ) : null}
       {guest && guest.length > 0 ? (
         <>
-          <Text className="text-2xl font-extrabold">Guest stars:</Text>
+          <View
+            style={{
+              padding: 16,
+              //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+            }}
+            className="backdrop-blur-3xl"
+          >
+            <Text className="text-2xl font-extrabold ">Guest Stars:</Text>
+          </View>
           {/* <FlatList
             className="mb-4"
             data={guest}
@@ -356,34 +397,6 @@ const EpisodeDetails = ({ route }) => {
           />
         </>
       ) : null}
-      <View className="flex flex-row items-center w-full justify-evenly">
-        <TouchableOpacity
-          onPress={() => {
-            navigation.push("MoreEpisodeImages", {
-              id: series_id,
-              type: "tvepisode",
-              season_number: season_number,
-              episode_number: episode_number,
-            });
-          }}
-          className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
-        >
-          <Text className="text-lg font-bold text-white">More Images</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.push("EpisodeVideoList", {
-              id: series_id,
-              type: "tvepisode",
-              season_number: season_number,
-              episode_number: episode_number,
-            });
-          }}
-          className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
-        >
-          <Text className="text-lg font-bold text-white">Related Videos</Text>
-        </TouchableOpacity>
-      </View>
     </ScrollView>
   );
 };

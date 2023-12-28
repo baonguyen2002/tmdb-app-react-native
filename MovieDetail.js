@@ -41,7 +41,13 @@ function MovieDetail({ route, navigation }) {
     navigation.setOptions({ title: header });
   }, [navigation, header]);
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerStyle: { backgroundColor: "#5b21b6" },
+        headerTintColor: "#14b8a6",
+      }}
+    >
       <Stack.Screen
         name="MovieDetailInfo"
         component={MovieDetailInfo}
@@ -311,7 +317,7 @@ const MovieDetailInfo = ({ route }) => {
         episode_number={false}
         //setList={setLocalFlaggedMovieList}
       />
-      <ScrollView className="px-4 ">
+      <ScrollView className="px-4 bg-teal-500">
         {movieDetail.poster_path ? (
           <Image
             source={{
@@ -325,160 +331,208 @@ const MovieDetailInfo = ({ route }) => {
             className="self-center w-full h-[480] rounded-lg mt-4"
           />
         )}
-        <Text className="mt-4 text-2xl font-bold text-center">
-          {movieDetail.title}
-        </Text>
-        {movieDetail.tagline ? (
-          <Text className="my-2 text-base italic text-center">
-            "{movieDetail.tagline}"
+        <View className="p-3 bg-blue-100 border-2 rounded-md border-violet-800">
+          <Text className="mt-4 text-2xl font-bold text-center">
+            {movieDetail.title}
           </Text>
-        ) : null}
-        {sessionId ? (
-          <>
-            <View className="flex flex-row w-full justify-evenly">
-              <TouchableOpacity
-                className="items-center w-1/3 text-center"
-                onPress={() => {
-                  handleHeartPress(
-                    movieDetail.poster_path,
-                    movieDetail.title,
-                    movieDetail.release_date
-                  );
-                }}
-              >
-                <AntDesign
-                  name={isFavorited ? "heart" : "hearto"}
-                  size={30}
-                  color={isFavorited ? "fuchsia" : "black"}
-                />
-                {isFavorited ? (
-                  <Text>Favorited</Text>
-                ) : (
-                  <Text>Add to Favorites</Text>
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="items-center w-1/3 text-center"
-                onPress={() => {
-                  handleBookmarkPress(
-                    movieDetail.poster_path,
-                    movieDetail.title,
-                    movieDetail.release_date
-                  );
-                }}
-              >
-                <FontAwesome
-                  name={isInWatchlist ? "bookmark" : "bookmark-o"}
-                  size={30}
-                  color={isInWatchlist ? "red" : "black"}
-                />
-                {isInWatchlist ? (
-                  <Text>In Watchlist</Text>
-                ) : (
-                  <Text>Add to Watchlist</Text>
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="items-center w-1/3 text-center"
-                onPress={() => {
-                  handleStarPress();
-                }}
-              >
-                <FontAwesome
-                  name={isRated ? "star" : "star-o"}
-                  size={30}
-                  color={isRated ? "#E06e0a" : "black"}
-                />
-                {isRated ? (
-                  <Text className="text-center">Tap to change your rating</Text>
-                ) : (
-                  <Text>Add your rating</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-          </>
-        ) : null}
-        {isRated.value ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">
-              Your rating:{" "}
+          {movieDetail.tagline ? (
+            <Text className="my-2 text-base italic text-center">
+              "{movieDetail.tagline}"
             </Text>
-            {isRated.value}
-          </Text>
-        ) : localRatings ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">
-              Your rating:{" "}
-            </Text>
-            {localRatings}
-          </Text>
-        ) : null}
-        {movieDetail.overview ? (
-          <>
-            <Text className="text-lg font-semibold">Sypnosis:</Text>
-            <Text className="text-base">{movieDetail.overview}</Text>
-          </>
-        ) : null}
-
-        {genre ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">Genre: </Text>
-            {genre}
-          </Text>
-        ) : null}
-        {movieDetail.vote_average ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">Ratings: </Text>
-            {movieDetail.vote_average}
-            {movieDetail.vote_count ? (
-              <>
-                <Text className="text-lg font-semibold text-black"> from </Text>
-                <Text>{movieDetail.vote_count} votes</Text>
-              </>
-            ) : null}
-          </Text>
-        ) : null}
-        {language.length > 0 ? (
-          language.length > 1 ? (
+          ) : null}
+          {sessionId ? (
+            <>
+              <View className="flex flex-row w-full justify-evenly">
+                <TouchableOpacity
+                  className="items-center w-1/3 text-center"
+                  onPress={() => {
+                    handleHeartPress(
+                      movieDetail.poster_path,
+                      movieDetail.title,
+                      movieDetail.release_date
+                    );
+                  }}
+                >
+                  <AntDesign
+                    name={isFavorited ? "heart" : "hearto"}
+                    size={30}
+                    color={isFavorited ? "fuchsia" : "black"}
+                  />
+                  {isFavorited ? (
+                    <Text>Favorited</Text>
+                  ) : (
+                    <Text>Add to Favorites</Text>
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="items-center w-1/3 text-center"
+                  onPress={() => {
+                    handleBookmarkPress(
+                      movieDetail.poster_path,
+                      movieDetail.title,
+                      movieDetail.release_date
+                    );
+                  }}
+                >
+                  <FontAwesome
+                    name={isInWatchlist ? "bookmark" : "bookmark-o"}
+                    size={30}
+                    color={isInWatchlist ? "red" : "black"}
+                  />
+                  {isInWatchlist ? (
+                    <Text>In Watchlist</Text>
+                  ) : (
+                    <Text>Add to Watchlist</Text>
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="items-center w-1/3 text-center"
+                  onPress={() => {
+                    handleStarPress();
+                  }}
+                >
+                  <FontAwesome
+                    name={isRated ? "star" : "star-o"}
+                    size={30}
+                    color={isRated ? "#E06e0a" : "black"}
+                  />
+                  {isRated ? (
+                    <Text className="text-center">
+                      Tap to change your rating
+                    </Text>
+                  ) : (
+                    <Text>Add your rating</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : null}
+          {isRated.value ? (
             <Text className="text-base italic text-sky-600">
               <Text className="text-lg font-semibold text-black">
-                Spoken languages:{" "}
+                Your rating:{" "}
               </Text>
-              {language.join(", ")}
+              {isRated.value}
             </Text>
-          ) : (
+          ) : localRatings ? (
             <Text className="text-base italic text-sky-600">
               <Text className="text-lg font-semibold text-black">
-                Spoken languages:{" "}
+                Your rating:{" "}
               </Text>
-              {language.join(", ")}
+              {localRatings}
             </Text>
-          )
-        ) : null}
-
-        {movieDetail.release_date ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">
-              Release date:{" "}
+          ) : null}
+          {movieDetail.overview ? (
+            <>
+              <Text className="text-lg font-semibold">Sypnosis:</Text>
+              <Text className="text-base">{movieDetail.overview}</Text>
+            </>
+          ) : null}
+          {genre ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">Genre: </Text>
+              {genre}
             </Text>
-            {movieDetail.release_date}
-          </Text>
-        ) : null}
-        {movieDetail.runtime ? (
-          <Text className="mb-2 text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">Runtime: </Text>
-            {movieDetail.runtime === 1
-              ? `${movieDetail.runtime} minute`
-              : `${movieDetail.runtime} minutes`}
-          </Text>
-        ) : null}
-
+          ) : null}
+          {movieDetail.vote_average ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">
+                Ratings:{" "}
+              </Text>
+              {movieDetail.vote_average}
+              {movieDetail.vote_count ? (
+                <>
+                  <Text className="text-lg font-semibold text-black">
+                    {" "}
+                    from{" "}
+                  </Text>
+                  <Text>{movieDetail.vote_count} votes</Text>
+                </>
+              ) : null}
+            </Text>
+          ) : null}
+          {language.length > 0 ? (
+            language.length > 1 ? (
+              <Text className="text-base italic text-sky-600">
+                <Text className="text-lg font-semibold text-black">
+                  Spoken languages:{" "}
+                </Text>
+                {language.join(", ")}
+              </Text>
+            ) : (
+              <Text className="text-base italic text-sky-600">
+                <Text className="text-lg font-semibold text-black">
+                  Spoken languages:{" "}
+                </Text>
+                {language.join(", ")}
+              </Text>
+            )
+          ) : null}
+          {movieDetail.release_date ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">
+                Release date:{" "}
+              </Text>
+              {movieDetail.release_date}
+            </Text>
+          ) : null}
+          {movieDetail.runtime ? (
+            <Text className="mb-2 text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">
+                Runtime:{" "}
+              </Text>
+              {movieDetail.runtime === 1
+                ? `${movieDetail.runtime} minute`
+                : `${movieDetail.runtime} minutes`}
+            </Text>
+          ) : null}
+        </View>
+        <View className="flex flex-row items-center justify-between w-full mt-3">
+          <TouchableOpacity
+            onPress={() => {
+              navigation2.navigate("MoreMovieImageList", {
+                id: movie_id,
+                type: "movie",
+                season_number: false,
+                episode_number: false,
+              });
+            }}
+            className="h-16  w-[48%] rounded-lg bg-violet-800 justify-center items-center"
+          >
+            <Text className="text-lg font-bold text-teal-500">More Images</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation2.navigate("MovieVideoList", {
+                id: movie_id,
+                type: "movie",
+                season_number: false,
+                episode_number: false,
+              });
+            }}
+            className="h-16  w-[48%] rounded-lg bg-violet-800 justify-center items-center"
+          >
+            <Text className="text-lg font-bold text-teal-500">
+              Related Videos
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View className="flex flex-row items-center w-full mt-4 justify-evenly">
+          <TouchableOpacity
+            onPress={() => {
+              navigation2.navigate("MovieReview");
+            }}
+            className="h-16  w-[60%] rounded-lg bg-violet-800 justify-center items-center"
+          >
+            <Text className="text-lg font-bold text-teal-500">See Reviews</Text>
+          </TouchableOpacity>
+        </View>
         {cast && cast.length > 0 ? (
           <>
             <View
               style={{
                 padding: 16,
-                backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+                //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
               }}
               className="backdrop-blur-3xl"
             >
@@ -543,7 +597,15 @@ const MovieDetailInfo = ({ route }) => {
         ) : null}
         {crew && crew.length > 0 ? (
           <>
-            <Text className="text-2xl font-extrabold">Crew:</Text>
+            <View
+              style={{
+                padding: 16,
+                //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+              }}
+              className="backdrop-blur-3xl"
+            >
+              <Text className="text-2xl font-extrabold ">Crew:</Text>
+            </View>
             {/* <FlatList
                 className="mb-4"
                 data={crew}
@@ -604,7 +666,17 @@ const MovieDetailInfo = ({ route }) => {
 
         {recommendations.length > 0 ? (
           <>
-            <Text className="text-2xl font-extrabold">You may also like:</Text>
+            <View
+              style={{
+                padding: 16,
+                //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+              }}
+              className="backdrop-blur-3xl"
+            >
+              <Text className="text-2xl font-extrabold ">
+                You may also like:
+              </Text>
+            </View>
             {/* <FlatList
                 className="mb-4"
                 data={recommendations}
@@ -674,44 +746,6 @@ const MovieDetailInfo = ({ route }) => {
             />
           </>
         ) : null}
-        <View className="flex flex-row items-center w-full justify-evenly">
-          <TouchableOpacity
-            onPress={() => {
-              navigation2.navigate("MoreMovieImageList", {
-                id: movie_id,
-                type: "movie",
-                season_number: false,
-                episode_number: false,
-              });
-            }}
-            className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
-          >
-            <Text className="text-lg font-bold text-white">More Images</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation2.navigate("MovieVideoList", {
-                id: movie_id,
-                type: "movie",
-                season_number: false,
-                episode_number: false,
-              });
-            }}
-            className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
-          >
-            <Text className="text-lg font-bold text-white">Related Videos</Text>
-          </TouchableOpacity>
-        </View>
-        <View className="flex flex-row items-center w-full mt-4 justify-evenly">
-          <TouchableOpacity
-            onPress={() => {
-              navigation2.navigate("MovieReview");
-            }}
-            className="h-24 border-4 border-black w-[65%] rounded-lg bg-lime-600 justify-center items-center"
-          >
-            <Text className="text-lg font-bold text-white">See Reviews</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
       {/* </ImageBackground> */}
     </>

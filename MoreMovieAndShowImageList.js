@@ -11,10 +11,40 @@ const MoreMovieAndShowImageList = ({ route }) => {
     <Tab.Navigator
       screenOptions={{
         tabBarScrollEnabled: true,
-        tabStyle: { width: 150 },
-        tabBarLabelStyle: { textTransform: "none", fontSize: 16 },
+        headerShown: false,
+        tabBarLabelStyle: {
+          textTransform: "none",
+          fontSize: 16,
+          fontWeight: "bold",
+          color: "#14b8a6",
+        },
+
+        tabBarStyle: {
+          backgroundColor: "#5b21b6",
+        }, // Background color for the tab bar
+        //tabStyle: { backgroundColor: "orange" },
+        // tabBarActiveTintColor: "#14b8a6",
+        // tabBarInactiveTintColor: "#14b8a6",
+        tabBarIndicatorStyle: { backgroundColor: "#14b8a6" },
         // indicatorStyle: { backgroundColor: "blue" },
       }}
+      // screenOptions={() => ({
+      //   headerShown: false,
+      //   tabBarLabelStyle: {
+      //     textTransform: "none",
+      //     fontSize: 16,
+      //     fontWeight: "bold",
+      //     color: "#14b8a6",
+      //   },
+
+      //   tabBarStyle: {
+      //     backgroundColor: "#5b21b6",
+      //   }, // Background color for the tab bar
+      //   //tabStyle: { backgroundColor: "orange" },
+      //   // tabBarActiveTintColor: "#14b8a6",
+      //   // tabBarInactiveTintColor: "#14b8a6",
+      //   tabBarIndicatorStyle: { backgroundColor: "#14b8a6" },
+      //})}
     >
       <Tab.Screen
         name="Posters"
@@ -114,6 +144,7 @@ const ImageTab = ({ route }) => {
       {imageList && imageList.length > 0 ? (
         imageType ? (
           <FlatList
+            className="bg-teal-500"
             numColumns={2}
             data={imageList}
             renderItem={({ item }) =>
@@ -136,8 +167,8 @@ const ImageTab = ({ route }) => {
           />
         ) : null
       ) : (
-        <View className="flex items-center justify-center w-full h-full">
-          <Text className="text-2xl font-bold text-center">
+        <View className="flex items-center justify-center w-full h-full bg-teal-500">
+          <Text className="text-2xl font-bold text-center text-blue-800">
             {`Seems like this ${
               type.includes("season")
                 ? "season"

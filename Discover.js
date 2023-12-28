@@ -23,31 +23,17 @@ import PersonProfileStack from "./PersonProfile";
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
-const DiscoverTabs = () => {
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarLabelStyle: { textTransform: "none", fontSize: 16 },
-      }}
-    >
-      <Tab.Screen
-        name="DiscoverMovie"
-        component={Discover}
-        options={{ tabBarLabel: "Movie" }}
-        initialParams={{ type: "movie" }}
-      />
-      <Tab.Screen
-        name="DiscoverTv"
-        component={Discover}
-        options={{ tabBarLabel: "TV Show" }}
-        initialParams={{ type: "tv" }}
-      />
-    </Tab.Navigator>
-  );
-};
 const DiscoverStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#5b21b6",
+        },
+        headerTintColor: "#14b8a6",
+      }}
+    >
       <Stack.Screen
         name="DiscoverTabs"
         component={DiscoverTabs}
@@ -76,6 +62,43 @@ const DiscoverStack = () => {
     </Stack.Navigator>
   );
 };
+
+const DiscoverTabs = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: {
+          textTransform: "none",
+          fontSize: 16,
+          fontWeight: "bold",
+          color: "#14b8a6",
+        },
+
+        tabBarStyle: {
+          backgroundColor: "#5b21b6",
+        }, // Background color for the tab bar
+        //tabStyle: { backgroundColor: "orange" },
+        // tabBarActiveTintColor: "#14b8a6",
+        // tabBarInactiveTintColor: "#14b8a6",
+        tabBarIndicatorStyle: { backgroundColor: "#14b8a6" },
+      }}
+    >
+      <Tab.Screen
+        name="DiscoverMovie"
+        component={Discover}
+        options={{ tabBarLabel: "Movie" }}
+        initialParams={{ type: "movie" }}
+      />
+      <Tab.Screen
+        name="DiscoverTv"
+        component={Discover}
+        options={{ tabBarLabel: "TV Show" }}
+        initialParams={{ type: "tv" }}
+      />
+    </Tab.Navigator>
+  );
+};
+
 const Discover = ({ route }) => {
   const navigation = useNavigation();
   const { type } = route.params;
@@ -128,7 +151,7 @@ const Discover = ({ route }) => {
   };
   const data = type === "movie" ? MovieGenre : TVGenre;
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} className="bg-teal-500">
       <View className="w-full ">
         <View className="w-full">
           <Dropdown
@@ -170,6 +193,7 @@ const Discover = ({ route }) => {
             valueField="id"
             placeholder="Select items"
             value={selected}
+            activeColor={"white"}
             // search
             searchPlaceholder="Search..."
             onChange={(item) => {
@@ -195,8 +219,14 @@ const Discover = ({ route }) => {
           />
         </View>
       </View>
-
-      <Button title="Dicover" onPress={DiscoverItem} />
+      <TouchableOpacity
+        onPress={DiscoverItem}
+        className="items-center justify-center w-full h-10 rounded-lg bg-violet-800"
+      >
+        <Text className="text-lg font-bold text-center text-teal-500">
+          Discover
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -205,10 +235,10 @@ const styles = StyleSheet.create({
   container: { padding: 16 },
   dropdown: {
     height: 50,
-    backgroundColor: "white",
+    backgroundColor: "#01b4e4",
     borderRadius: 12,
     padding: 12,
-    shadowColor: "#000",
+    //shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -220,9 +250,13 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    fontWeight: "bold",
+    color: "#0d253f",
   },
   selectedTextStyle: {
     fontSize: 14,
+    fontWeight: "bold",
+    color: "#0d253f",
   },
   iconStyle: {
     width: 20,
@@ -231,6 +265,7 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    backgroundColor: "white",
   },
   icon: {
     marginRight: 5,
@@ -240,14 +275,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: "#01b4e4",
   },
   selectedStyle: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 14,
-    backgroundColor: "white",
-    shadowColor: "#000",
+    //shadowColor: "#fff",
     marginTop: 8,
     marginRight: 12,
     paddingHorizontal: 12,
@@ -258,7 +293,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
+    backgroundColor: "#01b4e4",
     elevation: 2,
   },
   textSelectedStyle: {

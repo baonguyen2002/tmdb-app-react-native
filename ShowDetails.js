@@ -38,7 +38,13 @@ function ShowDetails({ route }) {
   const { series_id, header, origin } = route.params;
 
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerStyle: { backgroundColor: "#5b21b6" },
+        headerTintColor: "#14b8a6",
+      }}
+    >
       <Stack.Screen
         name="ShowDetailInfo"
         component={ShowDetailInfo}
@@ -297,7 +303,7 @@ const ShowDetailInfo = ({ route }) => {
         name={showDetail.name}
         date={showDetail.first_air_date}
       />
-      <ScrollView className="px-4 ">
+      <ScrollView className="px-4 bg-teal-500">
         {showDetail.poster_path ? (
           <Image
             source={{
@@ -311,178 +317,229 @@ const ShowDetailInfo = ({ route }) => {
             className="self-center w-full h-[480] rounded-lg mt-4"
           />
         )}
-
-        <Text className="mt-4 text-2xl font-bold text-center">
-          {showDetail.name}
-        </Text>
-        {showDetail.tagline ? (
-          <Text className="my-2 text-base italic text-center">
-            "{showDetail.tagline}"
+        <View className="p-3 bg-blue-100 border-2 rounded-md border-violet-800">
+          <Text className="mt-4 text-2xl font-bold text-center">
+            {showDetail.name}
           </Text>
-        ) : null}
-        {sessionId ? (
-          <>
-            <View className="flex flex-row w-full justify-evenly">
-              <TouchableOpacity
-                className="items-center w-1/3 text-center"
-                onPress={() => {
-                  handleHeartPress(
-                    series_id,
-                    showDetail.poster_path,
-                    showDetail.name,
-                    showDetail.first_air_date
-                  );
-                }}
-              >
-                <AntDesign
-                  name={isFavorited ? "heart" : "hearto"}
-                  size={30}
-                  color={isFavorited ? "fuchsia" : "black"}
-                />
-                {isFavorited ? (
-                  <Text>Favorited</Text>
-                ) : (
-                  <Text>Add to Favorites</Text>
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="items-center w-1/3 text-center"
-                onPress={() => {
-                  handleBookmarkPress(
-                    series_id,
-                    showDetail.poster_path,
-                    showDetail.name,
-                    showDetail.first_air_date
-                  );
-                }}
-              >
-                <FontAwesome
-                  name={isInWatchlist ? "bookmark" : "bookmark-o"}
-                  size={30}
-                  color={isInWatchlist ? "red" : "black"}
-                />
-                {isInWatchlist ? (
-                  <Text>In Watchlist</Text>
-                ) : (
-                  <Text>Add to Watchlist</Text>
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="items-center w-1/3 text-center"
-                onPress={() => {
-                  handleStarPress();
-                }}
-              >
-                <FontAwesome
-                  name={isRated ? "star" : "star-o"}
-                  size={30}
-                  color={isRated ? "#E06e0a" : "black"}
-                />
-                {isRated ? (
-                  <Text className="text-center">Tap to change your rating</Text>
-                ) : (
-                  <Text>Add your rating</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-          </>
-        ) : null}
-        {isRated.value ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">
-              Your rating:{" "}
+          {showDetail.tagline ? (
+            <Text className="my-2 text-base italic text-center">
+              "{showDetail.tagline}"
             </Text>
-            {isRated.value}
-          </Text>
-        ) : localRatings ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">
-              Your rating:{" "}
-            </Text>
-            {localRatings}
-          </Text>
-        ) : null}
-        {showDetail.overview ? (
-          <>
-            <Text className="text-lg font-semibold">Sypnosis:</Text>
-            <Text className="text-base">{showDetail.overview}</Text>
-          </>
-        ) : null}
-
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">
-            In production:{" "}
-          </Text>
-          {showDetail.in_production ? "Yes" : "No"}
-        </Text>
-        {showDetail.status ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">Status: </Text>
-            {showDetail.status}
-          </Text>
-        ) : null}
-
-        {genre ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">Genre: </Text>
-            {genre}
-          </Text>
-        ) : null}
-
-        {showDetail.number_of_episodes > 0 ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">
-              Number of episodes:{" "}
-            </Text>
-            {showDetail.number_of_episodes}
-          </Text>
-        ) : null}
-        {showDetail.number_of_seasons > 0 ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">
-              Number of seasons:{" "}
-            </Text>
-            {showDetail.number_of_seasons}
-          </Text>
-        ) : null}
-
-        {language && language.length > 0 ? (
-          language.length > 1 ? (
+          ) : null}
+          {sessionId ? (
+            <>
+              <View className="flex flex-row w-full justify-evenly">
+                <TouchableOpacity
+                  className="items-center w-1/3 text-center"
+                  onPress={() => {
+                    handleHeartPress(
+                      series_id,
+                      showDetail.poster_path,
+                      showDetail.name,
+                      showDetail.first_air_date
+                    );
+                  }}
+                >
+                  <AntDesign
+                    name={isFavorited ? "heart" : "hearto"}
+                    size={30}
+                    color={isFavorited ? "fuchsia" : "black"}
+                  />
+                  {isFavorited ? (
+                    <Text>Favorited</Text>
+                  ) : (
+                    <Text>Add to Favorites</Text>
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="items-center w-1/3 text-center"
+                  onPress={() => {
+                    handleBookmarkPress(
+                      series_id,
+                      showDetail.poster_path,
+                      showDetail.name,
+                      showDetail.first_air_date
+                    );
+                  }}
+                >
+                  <FontAwesome
+                    name={isInWatchlist ? "bookmark" : "bookmark-o"}
+                    size={30}
+                    color={isInWatchlist ? "red" : "black"}
+                  />
+                  {isInWatchlist ? (
+                    <Text>In Watchlist</Text>
+                  ) : (
+                    <Text>Add to Watchlist</Text>
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="items-center w-1/3 text-center"
+                  onPress={() => {
+                    handleStarPress();
+                  }}
+                >
+                  <FontAwesome
+                    name={isRated ? "star" : "star-o"}
+                    size={30}
+                    color={isRated ? "#E06e0a" : "black"}
+                  />
+                  {isRated ? (
+                    <Text className="text-center">
+                      Tap to change your rating
+                    </Text>
+                  ) : (
+                    <Text>Add your rating</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : null}
+          {isRated.value ? (
             <Text className="text-base italic text-sky-600">
               <Text className="text-lg font-semibold text-black">
-                Spoken languages:{" "}
+                Your rating:{" "}
               </Text>
-              {language.join(", ")}
+              {isRated.value}
             </Text>
-          ) : (
+          ) : localRatings ? (
             <Text className="text-base italic text-sky-600">
               <Text className="text-lg font-semibold text-black">
-                Spoken languages:{" "}
+                Your rating:{" "}
               </Text>
-              {language.join(", ")}
+              {localRatings}
             </Text>
-          )
-        ) : null}
+          ) : null}
+          {showDetail.overview ? (
+            <>
+              <Text className="text-lg font-semibold">Sypnosis:</Text>
+              <Text className="text-base">{showDetail.overview}</Text>
+            </>
+          ) : null}
 
-        {showDetail.first_air_date ? (
           <Text className="text-base italic text-sky-600">
             <Text className="text-lg font-semibold text-black">
-              First air date:{" "}
+              In production:{" "}
             </Text>
-            {showDetail.first_air_date}
+            {showDetail.in_production ? "Yes" : "No"}
           </Text>
-        ) : null}
-        {showDetail.last_air_date ? (
-          <Text className="text-base italic text-sky-600">
-            <Text className="text-lg font-semibold text-black">
-              Last air date:{" "}
+          {showDetail.status ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">Status: </Text>
+              {showDetail.status}
             </Text>
-            {showDetail.last_air_date}
-          </Text>
-        ) : null}
+          ) : null}
+
+          {genre ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">Genre: </Text>
+              {genre}
+            </Text>
+          ) : null}
+
+          {showDetail.number_of_episodes > 0 ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">
+                Number of episodes:{" "}
+              </Text>
+              {showDetail.number_of_episodes}
+            </Text>
+          ) : null}
+          {showDetail.number_of_seasons > 0 ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">
+                Number of seasons:{" "}
+              </Text>
+              {showDetail.number_of_seasons}
+            </Text>
+          ) : null}
+
+          {language && language.length > 0 ? (
+            language.length > 1 ? (
+              <Text className="text-base italic text-sky-600">
+                <Text className="text-lg font-semibold text-black">
+                  Spoken languages:{" "}
+                </Text>
+                {language.join(", ")}
+              </Text>
+            ) : (
+              <Text className="text-base italic text-sky-600">
+                <Text className="text-lg font-semibold text-black">
+                  Spoken languages:{" "}
+                </Text>
+                {language.join(", ")}
+              </Text>
+            )
+          ) : null}
+
+          {showDetail.first_air_date ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">
+                First air date:{" "}
+              </Text>
+              {showDetail.first_air_date}
+            </Text>
+          ) : null}
+          {showDetail.last_air_date ? (
+            <Text className="text-base italic text-sky-600">
+              <Text className="text-lg font-semibold text-black">
+                Last air date:{" "}
+              </Text>
+              {showDetail.last_air_date}
+            </Text>
+          ) : null}
+        </View>
+        <View className="flex flex-row items-center justify-between w-full mt-3">
+          <TouchableOpacity
+            onPress={() => {
+              navigation2.navigate("MoreShowImageList", {
+                id: series_id,
+                type: "tv",
+                season_number: false,
+                episode_number: false,
+              });
+            }}
+            className="h-16  w-[48%] rounded-lg bg-violet-800 justify-center items-center"
+          >
+            <Text className="text-lg font-bold text-teal-500">More Images</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation2.navigate("ShowVideoList", {
+                id: series_id,
+                type: "tv",
+                season_number: false,
+                episode_number: false,
+              });
+            }}
+            className="h-16  w-[48%] rounded-lg bg-violet-800 justify-center items-center"
+          >
+            <Text className="text-lg font-bold text-teal-500">
+              Related Videos
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View className="flex flex-row items-center w-full mt-4 justify-evenly">
+          <TouchableOpacity
+            onPress={() => {
+              navigation2.navigate("ShowReview");
+            }}
+            className="h-16  w-[60%] rounded-lg bg-violet-800 justify-center items-center"
+          >
+            <Text className="text-lg font-bold text-teal-500">See Reviews</Text>
+          </TouchableOpacity>
+        </View>
         {cast && cast.length > 0 ? (
           <>
-            <Text className="text-2xl font-extrabold">Cast:</Text>
+            <View
+              style={{
+                padding: 16,
+                //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+              }}
+              className="backdrop-blur-3xl"
+            >
+              <Text className="text-2xl font-extrabold ">Cast:</Text>
+            </View>
             {/* <FlatList
               className="mb-4"
               data={cast}
@@ -539,7 +596,15 @@ const ShowDetailInfo = ({ route }) => {
         ) : null}
         {crew && crew.length > 0 ? (
           <>
-            <Text className="text-2xl font-extrabold">Crew:</Text>
+            <View
+              style={{
+                padding: 16,
+                //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+              }}
+              className="backdrop-blur-3xl"
+            >
+              <Text className="text-2xl font-extrabold ">Crew:</Text>
+            </View>
             {/* <FlatList
               className="mb-4"
               data={crew}
@@ -596,7 +661,15 @@ const ShowDetailInfo = ({ route }) => {
         ) : null}
         {seasons && seasons.length > 0 ? (
           <>
-            <Text className="text-2xl font-extrabold">Seasons:</Text>
+            <View
+              style={{
+                padding: 16,
+                //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+              }}
+              className="backdrop-blur-3xl"
+            >
+              <Text className="text-2xl font-extrabold ">Seasons:</Text>
+            </View>
             {/* <FlatList
               className="mb-4"
               data={seasons}
@@ -677,7 +750,17 @@ const ShowDetailInfo = ({ route }) => {
         ) : null}
         {recommendations && recommendations.length > 0 ? (
           <>
-            <Text className="text-2xl font-extrabold">You may also like:</Text>
+            <View
+              style={{
+                padding: 16,
+                //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+              }}
+              className="backdrop-blur-3xl"
+            >
+              <Text className="text-2xl font-extrabold ">
+                You may also like:
+              </Text>
+            </View>
             {isRecommendationsLoading ? (
               <ActivityIndicator
                 size="large"
@@ -756,45 +839,6 @@ const ShowDetailInfo = ({ route }) => {
             )}
           </>
         ) : null}
-
-        <View className="flex flex-row items-center w-full justify-evenly">
-          <TouchableOpacity
-            onPress={() => {
-              navigation2.navigate("MoreShowImageList", {
-                id: series_id,
-                type: "tv",
-                season_number: false,
-                episode_number: false,
-              });
-            }}
-            className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
-          >
-            <Text className="text-lg font-bold text-white">More Images</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation2.navigate("ShowVideoList", {
-                id: series_id,
-                type: "tv",
-                season_number: false,
-                episode_number: false,
-              });
-            }}
-            className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
-          >
-            <Text className="text-lg font-bold text-white">Related Videos</Text>
-          </TouchableOpacity>
-        </View>
-        <View className="flex flex-row items-center w-full mt-4 justify-evenly">
-          <TouchableOpacity
-            onPress={() => {
-              navigation2.navigate("ShowReview");
-            }}
-            className="h-24 border-4 border-black w-[65%] rounded-lg bg-lime-600 justify-center items-center"
-          >
-            <Text className="text-lg font-bold text-white">See Reviews</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </>
   );

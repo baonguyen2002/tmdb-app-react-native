@@ -16,7 +16,25 @@ import {
 } from "./Database";
 const SettingsTabs = () => {
   return (
-    <Tabs.Navigator>
+    <Tabs.Navigator
+      screenOptions={() => ({
+        headerShown: false,
+        tabBarLabelStyle: {
+          textTransform: "none",
+          fontSize: 16,
+          fontWeight: "bold",
+          color: "#14b8a6",
+        },
+
+        tabBarStyle: {
+          backgroundColor: "#5b21b6",
+        }, // Background color for the tab bar
+        //tabStyle: { backgroundColor: "orange" },
+        // tabBarActiveTintColor: "#14b8a6",
+        // tabBarInactiveTintColor: "#14b8a6",
+        tabBarIndicatorStyle: { backgroundColor: "#14b8a6" },
+      })}
+    >
       <Tabs.Screen
         name="Movies"
         component={Settings}
@@ -125,6 +143,7 @@ const Settings = ({ route }) => {
     <Loading />
   ) : (
     <FlatList
+      className="bg-teal-500"
       numColumns={2}
       data={type === "movie" ? MovieGenre : TVGenre}
       renderItem={({ item }) => {
@@ -142,7 +161,7 @@ const Settings = ({ route }) => {
         return (
           <View className="flex flex-row items-center w-[49%] self-center px-8 justify-between">
             <View className="w-[75%]">
-              <Text>{item.name}</Text>
+              <Text className="font-bold text-blue-800">{item.name}</Text>
             </View>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}

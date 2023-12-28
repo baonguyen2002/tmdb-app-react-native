@@ -6,7 +6,7 @@ const { width } = Dimensions.get("window");
 
 const SplashScreen = () => {
   return (
-    <View style={styles.container} className="bg-indigo-500">
+    <View style={styles.container} className="bg-violet-800">
       <View style={styles.textContainer}>
         <Image
           source={require("./assets/tmdb.png")}

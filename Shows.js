@@ -1,6 +1,13 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Button, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import GridView from "./GridView";
 import ShowDetails from "./ShowDetails";
 import Loading from "./Loading";
@@ -13,6 +20,8 @@ function ShowsStack() {
     <Stack.Navigator
       screenOptions={{
         headerTitleAlign: "center",
+        headerStyle: { backgroundColor: "#5b21b6" },
+        headerTintColor: "#14b8a6",
       }}
     >
       <Stack.Screen
@@ -162,41 +171,51 @@ const Shows = () => {
         navigationDestination={"MainShowDetail"}
         origin={"tvmain"}
       />
-      <View className="flex flex-row items-center justify-between px-4 py-2">
+      <View className="flex flex-row items-center justify-between px-4 py-2 bg-teal-500">
         {showPage === 1 ? (
           <View></View>
         ) : (
-          <Button
+          <TouchableOpacity
+            className="items-center justify-center w-12 rounded-md h-9 bg-violet-800"
             onPress={() => GoBack()}
-            title="<<"
-            color="#841584"
-            accessibilityLabel="Go back previous page"
-          />
+          >
+            <Text className="font-extrabold text-center text-teal-500">
+              {"<<"}
+            </Text>
+          </TouchableOpacity>
         )}
         <View className="flex flex-row items-center justify-between">
-          <Text>Page: </Text>
+          <Text className="font-semibold text-blue-900">Page: </Text>
           <TextInput
             keyboardType="numeric"
             onChangeText={setcurrentPage}
             value={currentPage}
-            className="w-12 text-center"
+            className="w-12 font-semibold text-center text-blue-900"
           />
-          <Button
+          {/* <Button
             onPress={() => GoToPage()}
             title="Go"
-            color="#841584"
+            color="#6b21a8"
             accessibilityLabel="Go to specified page"
-          />
+          /> */}
+          <TouchableOpacity
+            className="items-center justify-center w-10 rounded-md h-9 bg-violet-800"
+            onPress={() => GoToPage()}
+          >
+            <Text className="font-extrabold text-center text-teal-500">Go</Text>
+          </TouchableOpacity>
         </View>
         {showPage === maxPage ? (
           <View></View>
         ) : (
-          <Button
+          <TouchableOpacity
+            className="items-center justify-center w-12 rounded-md h-9 bg-violet-800"
             onPress={() => GoNext()}
-            title=">>"
-            color="#841584"
-            accessibilityLabel="Go to next page"
-          />
+          >
+            <Text className="font-extrabold text-center text-teal-500">
+              {">>"}
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     </>

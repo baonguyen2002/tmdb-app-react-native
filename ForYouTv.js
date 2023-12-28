@@ -25,18 +25,28 @@ const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 const ForYouTvStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#5b21b6",
+        },
+        headerTintColor: "#14b8a6",
+      }}
+    >
       <Stack.Screen
         name="ForYouTvTab"
         component={ForYouTab}
-        options={{ headerTitle: "For You", headerTitleAlign: "center" }}
+        options={{
+          headerTitle: "Recommended For You",
+          headerTitleAlign: "center",
+        }}
       />
       <Stack.Screen
         name="ForYouTvSeeMore"
         component={ForYouTvSeeMore}
         options={{
           headerTitleAlign: "center",
-          headerTitle: "See More TV Shows",
+          headerTitle: "More TV Shows",
         }}
       />
     </Stack.Navigator>
@@ -44,7 +54,25 @@ const ForYouTvStack = () => {
 };
 const ForYouTab = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={() => ({
+        headerShown: false,
+        tabBarLabelStyle: {
+          textTransform: "none",
+          fontSize: 16,
+          fontWeight: "bold",
+          color: "#14b8a6",
+        },
+
+        tabBarStyle: {
+          backgroundColor: "#5b21b6",
+        }, // Background color for the tab bar
+        //tabStyle: { backgroundColor: "orange" },
+        // tabBarActiveTintColor: "#14b8a6",
+        // tabBarInactiveTintColor: "#14b8a6",
+        tabBarIndicatorStyle: { backgroundColor: "#14b8a6" },
+      })}
+    >
       <Tab.Screen
         name="Genre"
         component={ForYou}
@@ -175,7 +203,7 @@ const ForYou = ({ route }) => {
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
-        className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+        className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
         onPress={() => {
           navigation.navigate("MainShowDetail", {
             series_id: item.id,
@@ -201,24 +229,30 @@ const ForYou = ({ route }) => {
           )}
         </View>
         <View className="flex items-start justify-center w-[71%]  ">
-          <Text className="text-lg font-bold">
+          <Text className="text-lg font-bold text-[#0d253f]">
             {isVietnamese ? item.original_name : item.name}
           </Text>
-          <Text className="font-light">
+          <Text className="font-light text-violet-800">
             {"First aired date: " + item.first_air_date}
           </Text>
           <View className="flex flex-row items-center">
-            <Text className="font-semibold">Rating: </Text>
+            <Text className="font-semibold text-[#0d253f]">Rating: </Text>
             <Badge
               value={item.vote_average}
-              status="primary"
+              status={
+                item.vote_average > 8
+                  ? "success"
+                  : item.vote_average > 4
+                  ? "warning"
+                  : "error"
+              }
               badgeStyle={{
                 height: 22,
               }}
               textStyle={{
                 fontSize: 14,
                 fontWeight: "bold",
-                color: "white",
+                color: "black",
               }}
             />
           </View>
@@ -230,7 +264,7 @@ const ForYou = ({ route }) => {
     <>
       {localFavTvGenreList && localFavTvGenreList.length > 0 ? (
         <>
-          <View className="flex flex-row items-center justify-evenly">
+          {/* <View className="flex flex-row items-center justify-evenly">
             <View className="w-1/2">
               <Text className="text-base font-bold">
                 Tap to change filter type:
@@ -259,20 +293,57 @@ const ForYou = ({ route }) => {
                 }}
               />
             </View>
-          </View>
+          </View> */}
+          <View className="bg-teal-500 ">
+            <View className="flex flex-row items-center justify-between px-3 mt-2">
+              <View className="items-center w-3/5">
+                <Text className="text-base font-bold text-blue-900 ">
+                  Tap to change filter type:
+                </Text>
+              </View>
+              <TouchableOpacity
+                className="items-center w-2/5 h-10 bg-[#90cea1] justify-center rounded-xl"
+                onPress={() => {
+                  setOrJoinType((prev) => !prev);
+                }}
+              >
+                <Text className="text-base font-bold text-[#0d253f]">
+                  {orJoinType ? "Or" : "And"}
+                </Text>
+              </TouchableOpacity>
+            </View>
 
+            <View className="flex flex-row items-center justify-between px-3 my-2">
+              <View className="items-center w-3/5">
+                <Text className="text-base font-bold text-blue-900 ">
+                  Tap to change language:
+                </Text>
+              </View>
+              <TouchableOpacity
+                className="items-center w-2/5 h-10 bg-[#90cea1] justify-center rounded-xl"
+                onPress={() => {
+                  setIsVietnamese((prev) => !prev);
+                }}
+              >
+                <Text className="text-base font-bold text-[#0d253f]">
+                  {isVietnamese ? "Vietnamese" : "English"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
           {tvListBasedOnFavTvGenre && tvListBasedOnFavTvGenre.length > 0 ? (
             <>
               <FlatList
+                style={{ backgroundColor: "#14b8a6" }}
                 data={tvListBasedOnFavTvGenre.slice(0, 5)}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 ListFooterComponent={() => {
                   return (
-                    <View className="flex flex-row items-center justify-evenly">
+                    <View className="flex flex-row items-center pt-px bg-teal-500 justify-evenly">
                       {tvListBasedOnFavTvGenre.length <= 5 ? null : (
                         <TouchableOpacity
-                          className="w-[48%] bg-lime-300 flex-row items-center h-12 self-center justify-center border-2 border-fuchsia-400 rounded-lg"
+                          className="w-[48%] bg-violet-800 flex-row items-center h-12 self-center justify-center border-2 border-blue-800 rounded-lg"
                           onPress={() => {
                             navigation.navigate("ForYouTvSeeMore", {
                               list: localFavTvGenreList,
@@ -283,18 +354,18 @@ const ForYou = ({ route }) => {
                             });
                           }}
                         >
-                          <Text className="text-lg font-semibold text-center">
+                          <Text className="text-lg font-semibold text-center text-teal-500">
                             See more results
                           </Text>
                         </TouchableOpacity>
                       )}
                       <TouchableOpacity
-                        className="w-[48%] bg-lime-300 flex-row items-center h-12 self-center justify-center border-2 border-fuchsia-400 rounded-lg"
+                        className="w-[48%] bg-violet-800 flex-row items-center h-12 self-center justify-center border-2 border-blue-800 rounded-lg"
                         onPress={() => {
                           navigation.navigate("Shows");
                         }}
                       >
-                        <Text className="text-lg font-semibold text-center">
+                        <Text className="text-lg font-semibold text-center text-teal-500">
                           To Popular Shows
                         </Text>
                       </TouchableOpacity>
@@ -304,21 +375,21 @@ const ForYou = ({ route }) => {
               />
             </>
           ) : (
-            <View className="flex items-center justify-center w-full h-full">
-              <Text className="text-2xl font-bold text-center">
+            <View className="flex items-center justify-center w-full h-full bg-teal-500">
+              <Text className="text-2xl font-bold text-center text-blue-900">
                 Looks like no shows match your criteria.
               </Text>
               <View>
-                <Text className="text-2xl font-bold text-center">
+                <Text className="text-2xl font-bold text-center text-blue-900">
                   Or you can visit Popular TV Shows for some suggestions!
                 </Text>
                 <TouchableOpacity
-                  className="flex-row items-center  h-12 bg-green-600 border-2 rounded-md w-[65%] self-center"
+                  className="flex-row items-center self-center justify-center w-48 h-12 rounded-md bg-violet-800"
                   onPress={() => {
                     navigation.navigate("Shows");
                   }}
                 >
-                  <Text className="text-base font-medium text-center text-white">
+                  <Text className="text-lg font-bold text-center text-teal-500">
                     To Popular TV Shows
                   </Text>
                 </TouchableOpacity>
@@ -327,23 +398,23 @@ const ForYou = ({ route }) => {
           )}
         </>
       ) : (
-        <View className="flex items-center justify-center w-full h-full">
-          <Text className="text-2xl font-bold text-center">
+        <View className="flex items-center justify-center w-full h-full bg-teal-500">
+          <Text className="text-2xl font-bold text-center text-blue-800">
             {
               "Looks like you have not set any genre as your favorites yet. Modify it in Profile => Settings to see changes!"
             }
           </Text>
           <View>
-            <Text className="text-2xl font-bold text-center">
+            <Text className="text-2xl font-bold text-center text-blue-800">
               Or you can visit Popular TV Shows for some suggestions!
             </Text>
             <TouchableOpacity
-              className="flex-row items-center  h-12 bg-green-600 border-2 rounded-md w-[65%] self-center"
+              className="flex-row items-center self-center justify-center w-48 h-12 rounded-md bg-violet-800"
               onPress={() => {
                 navigation.navigate("Shows");
               }}
             >
-              <Text className="text-base font-medium text-center text-white">
+              <Text className="text-lg font-bold text-center text-teal-500">
                 To Popular TV Shows
               </Text>
             </TouchableOpacity>
@@ -354,7 +425,7 @@ const ForYou = ({ route }) => {
   ) : (
     <>
       {localFavActorList && localFavActorList.length > 0 ? (
-        <>
+        <View className="bg-teal-500">
           {/* <Button
             title={orJoinType ? "Search Type: Or" : "Search Type: And"}
             onPress={() => {
@@ -363,8 +434,9 @@ const ForYou = ({ route }) => {
           /> */}
           {/* {realLocalFavActorList && realLocalFavActorList.length > 0 ? ( */}
           <FlatList
+            style={{ backgroundColor: "#14b8a6" }}
             ListHeaderComponent={
-              <Text className="text-xl font-bold text-center">
+              <Text className="text-xl font-bold text-center text-blue-900">
                 Tap on any person to see the shows they starred in!
               </Text>
             }
@@ -372,7 +444,7 @@ const ForYou = ({ route }) => {
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+                  className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
                   onPress={() => {
                     navigation.navigate("ForYouTvSeeMore", {
                       actorId: item.actorId,
@@ -400,7 +472,9 @@ const ForYou = ({ route }) => {
                     )}
                   </View>
                   <View className="flex items-start justify-center w-[71%]  ">
-                    <Text className="text-lg font-bold">{item.name}</Text>
+                    <Text className="text-lg font-bold text-[#0d253f]">
+                      {item.name}
+                    </Text>
                   </View>
                 </TouchableOpacity>
               );
@@ -441,7 +515,7 @@ const ForYou = ({ route }) => {
               </View>
             </View>
           )} */}
-        </>
+        </View>
       ) : (
         <View className="flex items-center justify-center w-full h-full">
           <Text className="text-2xl font-bold text-center">

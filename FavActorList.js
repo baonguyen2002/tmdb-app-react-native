@@ -21,7 +21,12 @@ const FavActorStack = () => {
       <Stack.Screen
         name="FavActor"
         component={FavActorList}
-        options={{ headerTitle: "Favorite Actors", headerTitleAlign: "center" }}
+        options={{
+          headerTitle: "Favorite Actors",
+          headerTitleAlign: "center",
+          headerTintColor: "#14b8a6",
+          headerStyle: { backgroundColor: "#5b21b6" },
+        }}
       />
       {/* <Stack.Screen
         name="FavActorProfile"
@@ -51,11 +56,12 @@ const FavActorList = () => {
   );
   return localActorList && localActorList.length > 0 ? (
     <FlatList
+      style={{ backgroundColor: "#14b8a6" }}
       data={localActorList}
       renderItem={({ item }) => {
         return (
           <TouchableOpacity
-            className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+            className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
             onPress={() => {
               navigation.navigate("FavActorProfile", {
                 person_id: item.actorId,
@@ -80,7 +86,9 @@ const FavActorList = () => {
               )}
             </View>
             <View className="flex items-start justify-center w-[71%]  ">
-              <Text className="text-lg font-bold">{item.name}</Text>
+              <Text className="text-lg font-bold text-[#0d253f]">
+                {item.name}
+              </Text>
             </View>
           </TouchableOpacity>
         );
@@ -88,8 +96,8 @@ const FavActorList = () => {
       keyExtractor={(item) => item.id}
     />
   ) : (
-    <View className="flex items-center justify-center w-full h-full">
-      <Text className="text-2xl font-bold text-center">
+    <View className="flex items-center justify-center w-full h-full bg-teal-500">
+      <Text className="text-2xl font-bold text-center text-blue-800">
         Looks like you have not set any actor as your favorites yet. Like some
         people to see changes!
       </Text>

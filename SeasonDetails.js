@@ -15,7 +15,13 @@ const SeasonDetailsStack = ({ route }) => {
   const { header, series_id, season_number, origin } = route.params;
 
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerStyle: { backgroundColor: "#5b21b6" },
+        headerTintColor: "#14b8a6",
+      }}
+    >
       <Stack.Screen
         name="SeasonDetails"
         component={SeasonDetails}
@@ -49,18 +55,6 @@ const SeasonDetails = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [info, setInfo] = useState({});
 
-  function truncateName(str) {
-    if (str.length > 22) {
-      return str.slice(0, 15) + "...";
-    }
-    return str;
-  }
-  function truncateRole(str) {
-    if (str.length > 40) {
-      return str.slice(0, 40) + "...";
-    }
-    return str;
-  }
   useLayoutEffect(() => {
     navigation.setOptions({ title: header });
   }, [navigation, header]);
@@ -128,7 +122,7 @@ const SeasonDetails = ({ route }) => {
   }, []);
 
   return !isLoading ? (
-    <ScrollView className="w-full px-4">
+    <ScrollView className="w-full px-4 bg-teal-500">
       {info.poster_path ? (
         <Image
           source={{
@@ -142,22 +136,62 @@ const SeasonDetails = ({ route }) => {
           className="self-center w-full h-[455] rounded-lg mt-4"
         />
       )}
-      <Text className="mt-4 text-3xl font-bold text-center">{info.name}</Text>
-      {info.overview ? (
-        <>
-          <Text className="text-lg font-semibold">Sypnosis:</Text>
-          <Text className="text-base">{info.overview}</Text>
-        </>
-      ) : null}
-      {info.vote_average ? (
-        <Text className="text-base italic text-sky-600">
-          <Text className="text-lg font-semibold text-black">Ratings: </Text>
-          {info.vote_average}
-        </Text>
-      ) : null}
+      <View className="p-3 bg-blue-100 border-2 rounded-md border-violet-800">
+        <Text className="mt-4 text-3xl font-bold text-center">{info.name}</Text>
+        {info.overview ? (
+          <>
+            <Text className="text-lg font-semibold">Sypnosis:</Text>
+            <Text className="text-base">{info.overview}</Text>
+          </>
+        ) : null}
+        {info.vote_average ? (
+          <Text className="text-base italic text-sky-600">
+            <Text className="text-lg font-semibold text-black">Ratings: </Text>
+            {info.vote_average}
+          </Text>
+        ) : null}
+      </View>
+      <View className="flex flex-row items-center w-full my-3 justify-evenly">
+        <TouchableOpacity
+          onPress={() => {
+            navigation.push("MoreSeasonImages", {
+              id: series_id,
+              type: "tvseason",
+              season_number: season_number,
+              episode_number: false,
+            });
+          }}
+          className="h-16  w-[48%] rounded-lg bg-violet-800 justify-center items-center"
+        >
+          <Text className="text-lg font-bold text-teal-500">More Images</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.push("SeasonVideoList", {
+              id: series_id,
+              type: "tvseason",
+              season_number: season_number,
+              episode_number: false,
+            });
+          }}
+          className="h-16  w-[48%] rounded-lg bg-violet-800 justify-center items-center"
+        >
+          <Text className="text-lg font-bold text-teal-500">
+            Related Videos
+          </Text>
+        </TouchableOpacity>
+      </View>
       {cast && cast.length > 0 ? (
         <>
-          <Text className="text-2xl font-extrabold">Cast:</Text>
+          <View
+            style={{
+              padding: 16,
+              //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+            }}
+            className="backdrop-blur-3xl"
+          >
+            <Text className="text-2xl font-extrabold ">Cast:</Text>
+          </View>
           {/* <FlatList
             className="mb-4"
             data={cast}
@@ -217,7 +251,15 @@ const SeasonDetails = ({ route }) => {
       ) : null}
       {crew && crew.length > 0 ? (
         <>
-          <Text className="text-2xl font-extrabold">Crew:</Text>
+          <View
+            style={{
+              padding: 16,
+              //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+            }}
+            className="backdrop-blur-3xl"
+          >
+            <Text className="text-2xl font-extrabold ">Crew:</Text>
+          </View>
           {/* <FlatList
             className="mb-4"
             data={crew}
@@ -277,7 +319,15 @@ const SeasonDetails = ({ route }) => {
       ) : null}
       {mergedList && mergedList.length > 0 ? (
         <>
-          <Text className="text-2xl font-extrabold">Episodes:</Text>
+          <View
+            style={{
+              padding: 16,
+              //backgroundColor: "rgba(255, 255, 255, 0.5)", // Set the desired background color with opacity
+            }}
+            className="backdrop-blur-3xl"
+          >
+            <Text className="text-2xl font-extrabold ">Episodes:</Text>
+          </View>
 
           {/* <FlatList
             className="mb-4"
@@ -373,34 +423,6 @@ const SeasonDetails = ({ route }) => {
           />
         </>
       ) : null}
-      <View className="flex flex-row items-center w-full justify-evenly">
-        <TouchableOpacity
-          onPress={() => {
-            navigation.push("MoreSeasonImages", {
-              id: series_id,
-              type: "tvseason",
-              season_number: season_number,
-              episode_number: false,
-            });
-          }}
-          className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
-        >
-          <Text className="text-lg font-bold text-white">More Images</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.push("SeasonVideoList", {
-              id: series_id,
-              type: "tvseason",
-              season_number: season_number,
-              episode_number: false,
-            });
-          }}
-          className="h-24 border-4 border-black w-[45%] rounded-lg bg-lime-600 justify-center items-center"
-        >
-          <Text className="text-lg font-bold text-white">Related Videos</Text>
-        </TouchableOpacity>
-      </View>
     </ScrollView>
   ) : (
     <Loading />

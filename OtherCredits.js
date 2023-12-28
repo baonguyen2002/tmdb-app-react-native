@@ -11,7 +11,20 @@ const OtherCreditsTabs = ({ route }) => {
     <Tabs.Navigator
       screenOptions={{
         headerTitleAlign: "center",
-        tabBarLabelStyle: { textTransform: "none", fontSize: 16 },
+        tabBarLabelStyle: {
+          textTransform: "none",
+          fontSize: 16,
+          fontWeight: "bold",
+          color: "#14b8a6",
+        },
+
+        tabBarStyle: {
+          backgroundColor: "#5b21b6",
+        }, // Background color for the tab bar
+        //tabStyle: { backgroundColor: "orange" },
+        // tabBarActiveTintColor: "#14b8a6",
+        // tabBarInactiveTintColor: "#14b8a6",
+        tabBarIndicatorStyle: { backgroundColor: "#14b8a6" },
       }}
     >
       <Tabs.Screen

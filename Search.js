@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { Button } from "@rneui/base";
 import axios from "axios";
 import ListView from "./ListView";
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import Loading from "./Loading";
 import MovieDetail from "./MovieDetail";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -19,7 +19,14 @@ const SearchStack = () => {
       <Stack.Screen
         name="SearchTab"
         component={SearchTab}
-        options={{ headerTitleAlign: "center", headerTitle: "Search" }}
+        options={{
+          headerTitleAlign: "center",
+          headerTitle: "Search",
+          headerTitleStyle: {
+            color: "#14b8a6",
+          },
+          headerStyle: { backgroundColor: "#5b21b6" },
+        }}
       />
       <Stack.Screen
         name="SearchMovieDetails"
@@ -42,7 +49,25 @@ const SearchStack = () => {
 
 const SearchTab = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={() => ({
+        //headerShown: false,
+        tabBarLabelStyle: {
+          textTransform: "none",
+          fontSize: 16,
+          fontWeight: "bold",
+          color: "#14b8a6",
+        },
+
+        tabBarStyle: {
+          backgroundColor: "#5b21b6",
+        }, // Background color for the tab bar
+        //tabStyle: { backgroundColor: "orange" },
+        // tabBarActiveTintColor: "#14b8a6",
+        // tabBarInactiveTintColor: "#14b8a6",
+        tabBarIndicatorStyle: { backgroundColor: "#14b8a6" },
+      })}
+    >
       <Tab.Screen
         name="Movies"
         component={SearchResults}
@@ -74,7 +99,9 @@ const SearchResults = ({ route }) => {
   const [personSearchPage, setPersonSearchPage] = useState(1);
   const [TVShowSearchPage, setTVShowSearchPage] = useState(1);
   const [editable, setEditable] = useState(true);
+  const [searchButtonPressed, setSearchButtonPressed] = useState(false);
   const clearText = () => {
+    setSearchButtonPressed(false);
     setLoading(true);
     setEditable(true);
     setKeyword("");
@@ -148,28 +175,39 @@ const SearchResults = ({ route }) => {
 
   return (
     <>
-      <View className="flex flex-row items-center mt-3 justify-evenly">
-        <View className="w-4/6 p-2 border-2 border-indigo-500/75">
+      <View className="flex flex-row items-center pt-3 bg-teal-500 justify-evenly">
+        <View className="w-4/6 p-2 border-2 border-blue-800 rounded-md ">
           <TextInput
             editable={editable}
             onChangeText={setKeyword}
             value={keyword}
           />
         </View>
-        {keyword ? (
-          <TouchableOpacity onPress={clearText}>
-            <Ionicons name="close-circle-outline" size={30} color="red" />
-          </TouchableOpacity>
-        ) : null}
 
-        <Button
-          title="Search"
+        <TouchableOpacity onPress={clearText}>
+          <Entypo
+            name="circle-with-cross"
+            size={26}
+            color={keyword ? "red" : "#4b476b"}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
           onPress={() => {
             setLoading(true);
+            setSearchButtonPressed(true);
             Search();
           }}
-        />
+          className="items-center justify-center w-16 h-10 rounded-md bg-violet-800"
+        >
+          <Text className="text-base font-bold text-center text-teal-500">
+            Search
+          </Text>
+        </TouchableOpacity>
       </View>
+      {!searchButtonPressed ? (
+        <View className="w-full h-full bg-teal-500"></View>
+      ) : null}
       {!loading ? (
         results && results.length > 0 ? (
           <ListView
@@ -187,8 +225,8 @@ const SearchResults = ({ route }) => {
             isNewDataEmpty={isNewDataEmpty}
           />
         ) : isResultEmpty ? (
-          <View className="flex items-center justify-center w-full h-full">
-            <Text className="px-4 text-2xl font-extrabold text-center ">
+          <View className="flex items-center justify-center w-full h-full bg-teal-500">
+            <Text className="px-4 text-2xl font-extrabold text-center text-blue-800">
               Seems like there are no results...
             </Text>
           </View>

@@ -38,6 +38,7 @@ const ListView = ({ results, type, setPage, origin, isNewDataEmpty, role }) => {
   return (
     <>
       <FlatList
+        className="bg-teal-500"
         data={results}
         // onEndReachedThreshold={0.5}
         initialNumToRender={5}
@@ -151,7 +152,7 @@ class Item extends PureComponent {
     }
     return (
       <TouchableOpacity
-        className="flex flex-row justify-start h-40 p-px my-px rounded-md border-x-indigo-500 border-x-4 border-y-red-700 border-y-4"
+        className="flex flex-row justify-start h-40 p-px bg-teal-500 border-2 border-blue-800"
         onPress={() => {
           // console.log(
           //   "header:",
@@ -187,7 +188,7 @@ class Item extends PureComponent {
         </View> */}
         <RenderImage item={item} type={type} />
         <View className="flex items-start justify-center w-[71%]  ">
-          <Text className="text-lg font-bold">
+          <Text className="text-lg font-bold text-[#0d253f]">
             {type === "movies"
               ? truncateName(item.title)
               : truncateName(item.name)}
@@ -196,7 +197,7 @@ class Item extends PureComponent {
           {type != "person" ? (
             <>
               {date ? (
-                <Text className="font-light">
+                <Text className="font-light text-violet-800">
                   {type === "movies"
                     ? "Release date: " + item.release_date
                     : "First aired: " + item.first_air_date}
@@ -204,17 +205,23 @@ class Item extends PureComponent {
               ) : null}
 
               <View className="flex flex-row items-center">
-                <Text className="font-semibold">Rating: </Text>
+                <Text className="font-semibold text-[#0d253f]">Rating: </Text>
                 <Badge
                   value={item.vote_average}
-                  status="primary"
+                  status={
+                    item.vote_average > 8
+                      ? "success"
+                      : item.vote_average > 4
+                      ? "warning"
+                      : "error"
+                  }
                   badgeStyle={{
                     height: 22,
                   }}
                   textStyle={{
                     fontSize: 14,
                     fontWeight: "bold",
-                    color: "white",
+                    color: "black",
                   }}
                 />
               </View>

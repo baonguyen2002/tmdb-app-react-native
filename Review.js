@@ -175,6 +175,7 @@ const Review = ({ route }) => {
   };
   return (
     <FlatList
+      className="bg-teal-500"
       ListHeaderComponent={
         <View className="mb-3">
           {foundReview ? (

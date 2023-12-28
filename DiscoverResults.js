@@ -83,55 +83,63 @@ const DiscoverResults = ({ route }) => {
         navigationDestination={navigationDestination}
         origin={origin}
       />
-      <View className="flex flex-row items-center justify-between px-4 py-2">
+      <View className="flex flex-row items-center justify-between px-4 py-2 bg-teal-500">
         {page === 1 ? (
           <View></View>
         ) : (
+          // <Button
+          //   onPress={() => GoBack()}
+          //   title="<<"
+          //   color="#6b21a8"
+          //   accessibilityLabel="Go back previous page"
+          // />
           <TouchableOpacity
+            className="items-center justify-center w-12 rounded-md h-9 bg-violet-800"
             onPress={() => GoBack()}
-            className=" bg-gradient-to-r from-sky-500 to-indigo-500"
           >
-            <Text> {"<<"} </Text>
+            <Text className="font-extrabold text-center text-teal-500">
+              {"<<"}
+            </Text>
           </TouchableOpacity>
         )}
         <View className="flex flex-row items-center justify-between">
-          <Text>Page: </Text>
+          <Text className="font-semibold text-blue-900">Page: </Text>
           <TextInput
             keyboardType="numeric"
             onChangeText={setcurrentPage}
             value={currentPage}
-            className="w-12 text-center"
+            className="w-12 font-semibold text-center text-blue-900"
           />
-          <Button
+          {/* <Button
             onPress={() => GoToPage()}
             title="Go"
-            color="#841584"
+            color="#6b21a8"
             accessibilityLabel="Go to specified page"
-          />
+          /> */}
+          <TouchableOpacity
+            className="items-center justify-center w-10 rounded-md h-9 bg-violet-800"
+            onPress={() => GoToPage()}
+          >
+            <Text className="font-extrabold text-center text-teal-500">Go</Text>
+          </TouchableOpacity>
         </View>
-        {page === 500 ? (
+        {page === maxPage ? (
           <View></View>
         ) : (
-          // <LinearGradient
-          //   // Button Linear Gradient
-          //   colors={["#fc3d03", "#000000", "#192f6a"]}
-          //   className="rounded-xl"
-          //   start={{ x: 0, y: 0 }} // Starting point at the top-left corner
-          //   end={{ x: 1, y: 1 }} // Ending point at the bottom-right corner
-          // >
-          //   <TouchableOpacity
-          //     onPress={() => GoNext()}
-          //     className="items-center justify-center w-14 h-9 rounded-xl"
-          //   >
-          //     <AntDesign name="forward" size={24} color="white" />
-          //   </TouchableOpacity>
-          // </LinearGradient>
-          <Button
+          // <Button
+          //   onPress={() => GoNext()}
+          //   title=">>"
+          //   color="#6b21a8"
+          //   accessibilityLabel="Go to next page"
+          // />
+          <TouchableOpacity
+            className="items-center justify-center w-12 rounded-md h-9 bg-violet-800"
             onPress={() => GoNext()}
-            title=">>"
-            color="#841584"
-            accessibilityLabel="Go to next page"
-          />
+          >
+            <Text className="font-extrabold text-center text-teal-500">
+              {">>"}
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     </>
