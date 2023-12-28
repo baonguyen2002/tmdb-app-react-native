@@ -517,22 +517,22 @@ const ForYou = ({ route }) => {
           )} */}
         </View>
       ) : (
-        <View className="flex items-center justify-center w-full h-full">
-          <Text className="text-2xl font-bold text-center">
+        <View className="flex items-center justify-center w-full h-full bg-teal-500">
+          <Text className="text-2xl font-bold text-center text-blue-800">
             Looks like you have not set any actor as your favorites yet. Like
             some people to see changes!
           </Text>
           <View>
-            <Text className="text-2xl font-bold text-center">
+            <Text className="text-2xl font-bold text-center text-blue-800">
               Or you can visit Popular TV Shows for some suggestions!
             </Text>
             <TouchableOpacity
-              className="flex-row items-center  h-12 bg-green-600 border-2 rounded-md w-[65%] self-center"
+              className="flex-row items-center self-center justify-center w-48 h-12 rounded-md bg-violet-800"
               onPress={() => {
                 navigation.navigate("Shows");
               }}
             >
-              <Text className="text-base font-medium text-center text-white">
+              <Text className="text-lg font-bold text-center text-teal-500">
                 To Popular TV Shows
               </Text>
             </TouchableOpacity>
