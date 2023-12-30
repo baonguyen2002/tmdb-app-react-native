@@ -18,20 +18,20 @@ To run the app locally, follow these steps:
 
    ````
    git clone https://github.com/baonguyen2002/tmdb-app-react-native.git
-   ```
+   
 
 2. Install the dependencies:
 
    ````
    cd tmdb-app-react-native
    npm install
-   ```
+
 
 3. Start the development server:
 
    ````
    npx expo start
-   ```
+ 
 
 
 ## Acknowledgements
