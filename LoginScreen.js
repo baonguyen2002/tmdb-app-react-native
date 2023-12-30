@@ -45,6 +45,9 @@ const LoginScreen = () => {
   useFocusEffect(
     useCallback(() => {
       if (!approved) {
+        setApproved(false);
+        setSessionId(null);
+        setRequestToken(null);
         fetchRequestToken();
       }
     }, [approved])

@@ -142,7 +142,7 @@ const Profile = () => {
           onPress={() => {
             setSessionId(null);
             setApproved(false);
-            // setRequestToken(null);
+            setRequestToken(null);
             axios
               .delete(
                 `https://api.themoviedb.org/3/authentication/session?api_key=841da308423b4b64ea4d57d052583683&&session_id=${sessionId}`

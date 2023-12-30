@@ -55,6 +55,7 @@ const Settings = ({ route }) => {
     favMovieGenreList,
     favTvGenreList,
   } = useContext(Context);
+
   const fetchFavTvGenreFromDatabase = async () => {
     try {
       const tvGenreListFromDB = await fetchFavTvGenre();
@@ -64,6 +65,7 @@ const Settings = ({ route }) => {
     } catch (error) {
       console.log("Error fetching favTvGenre list:", error);
     }
+    setIsLoading(false);
   };
   const fetchFavMovieGenreFromDatabase = async () => {
     try {
@@ -74,6 +76,7 @@ const Settings = ({ route }) => {
     } catch (error) {
       console.log("Error fetching favMovieGenre list:", error);
     }
+    setIsLoading(false);
   };
   const { type } = route.params;
   const [localMovieList, setLocalMovieList] = useState([]);
@@ -91,6 +94,7 @@ const Settings = ({ route }) => {
   }, []);
 
   const toggleSwitch = (id) => {
+    setIsLoading(true);
     if (type === "movie") {
       if (localMovieList.some((object) => object.favMovieGenreId === id)) {
         const handleDeleteMovieGenre = async (id) => {

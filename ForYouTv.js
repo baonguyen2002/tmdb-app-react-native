@@ -14,13 +14,14 @@ import {
   Button,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { fetchFavTvGenre, fetchActor } from "./Database";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Badge } from "@rneui/themed";
-
+const windowHeight = Dimensions.get("window").height;
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 const ForYouTvStack = () => {
@@ -425,7 +426,7 @@ const ForYou = ({ route }) => {
   ) : (
     <>
       {localFavActorList && localFavActorList.length > 0 ? (
-        <View className="bg-teal-500">
+        <View className="w-full h-full bg-teal-500">
           {/* <Button
             title={orJoinType ? "Search Type: Or" : "Search Type: And"}
             onPress={() => {
@@ -481,16 +482,18 @@ const ForYou = ({ route }) => {
             }}
             keyExtractor={(item) => item.actorId}
             ListFooterComponent={() => {
-              <TouchableOpacity
-                className="w-[70%] bg-lime-300 flex-row items-center h-12 self-center justify-center border-2 border-fuchsia-400 rounded-lg"
-                onPress={() => {
-                  navigation.navigate("Shows");
-                }}
-              >
-                <Text className="text-lg font-semibold text-center">
-                  To Popular Shows
-                </Text>
-              </TouchableOpacity>;
+              return (
+                <TouchableOpacity
+                  className="w-[70%] bg-violet-800 flex-row items-center h-12 self-center justify-center border-2 border-blue-800 rounded-lg"
+                  onPress={() => {
+                    navigation.navigate("Shows");
+                  }}
+                >
+                  <Text className="text-lg font-semibold text-center text-teal-500">
+                    To Popular Shows
+                  </Text>
+                </TouchableOpacity>
+              );
             }}
           />
           {/* ) : (

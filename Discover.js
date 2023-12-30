@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Pressable,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MultiSelect, Dropdown } from "react-native-element-dropdown";
@@ -122,6 +123,36 @@ const Discover = ({ route }) => {
       </View>
     );
   };
+  const renderItem = (item) => {
+    // Check if the item is selected
+    const isSelected = selected.includes(item);
+
+    return (
+      <Pressable
+        onPress={() => {
+          // Toggle the selection of the item
+          if (isSelected) {
+            setSelected(selected.filter((i) => i !== item));
+          } else {
+            setSelected([...selected, item]);
+          }
+        }}
+        style={[
+          styles.item,
+          isSelected && { backgroundColor: "yellow" }, // Apply different background color for selected item
+        ]}
+      >
+        <Text
+          style={[
+            styles.textItem,
+            isSelected && { color: "red" }, // Apply different text color for selected item
+          ]}
+        >
+          {item.name}
+        </Text>
+      </Pressable>
+    );
+  };
   const renderItem1 = (item) => {
     return (
       <View style={styles.item}>
@@ -149,6 +180,7 @@ const Discover = ({ route }) => {
       navigationDestination: type === "movie" ? "DiscoverMovie" : "DiscoverTv",
     });
   };
+
   const data = type === "movie" ? MovieGenre : TVGenre;
   return (
     <ScrollView style={styles.container} className="bg-teal-500">
@@ -188,23 +220,22 @@ const Discover = ({ route }) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={MovieGenre}
             labelField="name"
             valueField="id"
-            placeholder="Select items"
+            placeholder="Select item"
             value={selected}
-            activeColor={"white"}
-            // search
+            //search
             searchPlaceholder="Search..."
             onChange={(item) => {
               setSelected(item);
             }}
             renderLeftIcon={() => (
-              <Entypo
-                name="add-to-list"
-                size={20}
-                color="black"
+              <AntDesign
                 style={styles.icon}
+                color="black"
+                name="Safety"
+                size={20}
               />
             )}
             renderItem={renderItem1}
@@ -235,28 +266,24 @@ const styles = StyleSheet.create({
   container: { padding: 16 },
   dropdown: {
     height: 50,
-    backgroundColor: "#01b4e4",
+    backgroundColor: "white",
     borderRadius: 12,
     padding: 12,
-    //shadowColor: "#000",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-    width: "100%",
+
     elevation: 2,
   },
   placeholderStyle: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#0d253f",
   },
   selectedTextStyle: {
     fontSize: 14,
-    fontWeight: "bold",
-    color: "#0d253f",
   },
   iconStyle: {
     width: 20,
@@ -265,7 +292,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    backgroundColor: "white",
   },
   icon: {
     marginRight: 5,
@@ -275,14 +301,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#01b4e4",
   },
   selectedStyle: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 14,
-    //shadowColor: "#fff",
+    backgroundColor: "white",
+    shadowColor: "#000",
     marginTop: 8,
     marginRight: 12,
     paddingHorizontal: 12,
@@ -293,7 +319,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-    backgroundColor: "#01b4e4",
+
     elevation: 2,
   },
   textSelectedStyle: {

@@ -45,7 +45,7 @@ const VideoList = ({ route }) => {
   return isLoading ? (
     <Loading />
   ) : (
-    <View className="px-4 bg-teal-500">
+    <View className="w-full h-full px-4 bg-teal-500">
       {videosLoaded && videos.length > 0 ? (
         <>
           <FlatList
