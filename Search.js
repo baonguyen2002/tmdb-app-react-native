@@ -99,7 +99,7 @@ const SearchResults = ({ route }) => {
   const [personSearchPage, setPersonSearchPage] = useState(1);
   const [TVShowSearchPage, setTVShowSearchPage] = useState(1);
   const [editable, setEditable] = useState(true);
-  const [searchButtonPressed, setSearchButtonPressed] = useState(false);
+  //const [searchButtonPressed, setSearchButtonPressed] = useState(false);
   const clearText = () => {
     setSearchButtonPressed(false);
     setLoading(true);
@@ -124,8 +124,7 @@ const SearchResults = ({ route }) => {
   const Search = () => {
     const url =
       type === "movies"
-        ? `
-  https://api.themoviedb.org/3/search/movie?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${movieSearchPage}`
+        ? `https://api.themoviedb.org/3/search/movie?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${movieSearchPage}`
         : type === "tvshow"
         ? `https://api.themoviedb.org/3/search/tv?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${TVShowSearchPage}`
         : `https://api.themoviedb.org/3/search/person?query=${keyword}&api_key=841da308423b4b64ea4d57d052583683&page=${personSearchPage}&include_adult=false&language=en-US`;
@@ -195,7 +194,7 @@ const SearchResults = ({ route }) => {
         <TouchableOpacity
           onPress={() => {
             setLoading(true);
-            setSearchButtonPressed(true);
+            //setSearchButtonPressed(true);
             Search();
           }}
           className="items-center justify-center w-16 h-10 rounded-md bg-violet-800"
@@ -205,7 +204,7 @@ const SearchResults = ({ route }) => {
           </Text>
         </TouchableOpacity>
       </View>
-      {!searchButtonPressed ? (
+      {results.length === 0 ? (
         <View className="w-full h-full bg-teal-500"></View>
       ) : null}
       {!loading ? (

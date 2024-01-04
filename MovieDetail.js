@@ -359,9 +359,9 @@ const MovieDetailInfo = ({ route }) => {
                     color={isFavorited ? "fuchsia" : "black"}
                   />
                   {isFavorited ? (
-                    <Text>Favorited</Text>
+                    <Text className="text-center">Favorited</Text>
                   ) : (
-                    <Text>Add to Favorites</Text>
+                    <Text className="text-center">Add to Favorites</Text>
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -380,9 +380,9 @@ const MovieDetailInfo = ({ route }) => {
                     color={isInWatchlist ? "red" : "black"}
                   />
                   {isInWatchlist ? (
-                    <Text>In Watchlist</Text>
+                    <Text className="text-center">In Watchlist</Text>
                   ) : (
-                    <Text>Add to Watchlist</Text>
+                    <Text className="text-center">Add to Watchlist</Text>
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -401,7 +401,7 @@ const MovieDetailInfo = ({ route }) => {
                       Tap to change your rating
                     </Text>
                   ) : (
-                    <Text>Add your rating</Text>
+                    <Text className="text-center">Add your rating</Text>
                   )}
                 </TouchableOpacity>
               </View>

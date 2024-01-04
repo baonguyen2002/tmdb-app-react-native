@@ -32,7 +32,7 @@ const PersonImageList = ({ route }) => {
   return isLoading ? (
     <Loading />
   ) : imageList && imageList.length > 0 ? (
-    <View className="w-full p-2">
+    <View className="w-full h-full p-2 bg-teal-500">
       <FlatList
         numColumns={2}
         data={imageList}
@@ -57,8 +57,8 @@ const PersonImageList = ({ route }) => {
       />
     </View>
   ) : (
-    <View className="flex items-center justify-center w-full h-full">
-      <Text className="px-4 text-2xl font-extrabold text-center ">
+    <View className="flex items-center justify-center w-full h-full bg-teal-500">
+      <Text className="px-4 text-2xl font-extrabold text-center text-blue-800">
         Seems like this person has no more images...
       </Text>
     </View>

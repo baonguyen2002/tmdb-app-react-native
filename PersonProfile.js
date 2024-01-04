@@ -153,7 +153,11 @@ const PersonProfile = ({ route }) => {
             size={30}
             color={isFavorited ? "fuchsia" : "black"}
           />
-          {isFavorited ? <Text>Favorited</Text> : <Text>Add to Favorites</Text>}
+          {isFavorited ? (
+            <Text className="text-center">Favorited</Text>
+          ) : (
+            <Text className="text-center">Add to Favorites</Text>
+          )}
         </TouchableOpacity>
         {personDetail.birthday ? (
           <Text className="text-base italic text-sky-600">

@@ -21,11 +21,11 @@ export default SortBy = [
   },
   {
     value: "primary_release_date.asc",
-    name: "Date: Low to High",
+    name: "Date: Oldest to Newest",
   },
   {
     value: "primary_release_date.desc",
-    name: "Date: Decend",
+    name: "Date: Newest to Oldest",
   },
   {
     value: "vote_average.asc",

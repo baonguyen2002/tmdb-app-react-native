@@ -255,15 +255,8 @@ const OtherCredits = ({ route }) => {
         />
       </>
     ) : (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text
-          style={{
-            paddingHorizontal: 16,
-            fontSize: 20,
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-        >
+      <View className="flex items-center justify-center w-full h-full bg-teal-500">
+        <Text className="px-4 text-2xl font-extrabold text-center text-blue-800">
           Seems like this person has not taken part in any other works...
         </Text>
       </View>

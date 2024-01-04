@@ -2,7 +2,9 @@ import React from "react";
 import { WebView } from "react-native-webview";
 import { Context } from "./Context";
 import { useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
 const ConfirmPage = ({ route }) => {
+  const navigation = useNavigation();
   const { setApproved } = useContext(Context);
   const { requestToken } = route.params;
   //   useEffect(() => {
@@ -20,10 +22,12 @@ const ConfirmPage = ({ route }) => {
       if (url.includes("allow")) {
         //console.log("User approved");
         setApproved(true);
+        navigation.navigate("LoginScreen");
         // Handle the user's approval action
       } else if (url.includes("deny")) {
         //console.log("User denied");
         setApproved(false);
+        navigation.navigate("LoginScreen");
         // Handle the user's denial action
       }
     }
